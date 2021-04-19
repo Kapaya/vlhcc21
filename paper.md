@@ -11,7 +11,7 @@ secPrefix:
     - "Section"
     - "Sections"
 abstract: |
- Websites are malleable: users can run code in the browser to customize them. However, this malleability is typically only accessible to programmers with knowledge of HTML and Javascript. Testing
+ Websites are malleable: users can run code in the browser to customize them. However, this malleability is typically only accessible to programmers with knowledge of HTML and Javascript.
 ---
 
 # Introduction {#sec:introduction}
