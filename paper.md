@@ -20,11 +20,11 @@ Many websites on the internet do not meet the exact needs of all of their users.
 
 We previously developed an alternative approach known as data-driven web customization []. It enables web customization without traditional programming through direct manipulation of a spreadsheet-like table, right within the context of a browser. In this paradigm, a table is added to a website that contains its underlying structured data and is bidirectionally synchronized with it. Changes to the table, including sorting, filtering, adding columns and running computations in a spreadsheet-like formula language are propagated to the website thereby customizing it.
 
-While end-user friendly, data-driven customization suffers from a divide between generating the table and using it to perform customizations: the table is generated through web scraping code, referred to as website adapters, written by programmers but used via direct manipulation by end-users. This divide limits the agency of end-users because they rely on programmers to write the required web scraping code before being able to customize. 
+While end-user friendly, data-driven customization suffers from a divide between generating the table and using it to perform customizations: the table is generated through web scraping code, referred to as website adapters, written by programmers but used via direct manipulation by end-users. This divide limits the agency of end-users because they rely on programmers to write the required web scraping code before being able to customize.
 
 To bridge this divide, we start by harnessing programming-by-demonstration to achieve end-user web scraping within the context of the table used for customizations. This is achieved via a technique called *wrapper induction* which we discuss in [@sec:implementation]. As in prior approaches [], users demonstrate examples of column values and the system uses the demonstration to synthesize a program that generalizes to all the available column values. However, this is not effective as it reduces the expressiveness of web scraping for programmers for when demonstrating is not sufficient and hides the underlying program synthesized to perform the web scraping, thus preventing modifications to be made to it. This friction between designing for both end-users and programmers is a general problem with software interfaces as discussed by Chugh in his position paper [].
 
-To fully bridge the divide, we build on several key design goals we discuss in [@sec:design-principles] to evolve end-user web scraping: users scrape by demonstrating values on the website and the system presents a formula, in the aforementioned spreadsheet-like formula language, corresponding to the synthesized web scraping program as a Cascading Style Sheet (CSS) selector. This is important because it enables programmers to view the synthesized CSS selector, modify it and even write one from scratch, thereby achieving the seemingly opposing goals of empowering end-users without disempowering programmers. Because the web scraping process generates formulas in the same format as formulas used for customization, we can fuse the two into a unified model for web scraping and customization in which users can interleave scraping and customizing. This results in a more incremental approach to building web customizations as we show in [@sec:examples]. 
+To fully bridge the divide, we build on several key design goals we discuss in [@sec:design-principles] to evolve end-user web scraping: users scrape by demonstrating values on the website and the system presents a formula, in the aforementioned spreadsheet-like formula language, corresponding to the synthesized web scraping program as a Cascading Style Sheet (CSS) selector. This is important because it enables programmers to view the synthesized CSS selector, modify it and even write one from scratch, thereby achieving the seemingly opposing goals of empowering end-users without disempowering programmers. Because the web scraping process generates formulas in the same format as formulas used for customization, we can fuse the two into a unified model for web scraping and customization in which users can interleave scraping and customizing. This results in a more incremental approach to building web customizations as we show in [@sec:examples].
 
 To test the viability of our unified model for web scraping and customization, we implement it as an extension of Wildcard, a browser extension that implements data-driven web customization. Our contributions are:
 
@@ -120,7 +120,7 @@ The row-sibling constraint we mentioned earlier is important for the end goal of
 
 ### CSS Selector Synthesis Algorithms
 
-Our CSS selector synthesis algorithms guarantee the synthesis of a valid selector if it is present because of its exhaustive nature. However, it does not guarantee that the synthesized selector is robust. Take column elements corresponding to a column of movie titles whose `class` attribute has a  value of “column-1  movie-title”. Our algorithm would synthesize “column-1” as the column selector because it would be first class in the generated class combination list and it selects all the column elements. An inexperienced programmer writing code to scrape the column elements could also use “column-1” for the similar reasons. However, an experienced programmer would likely know to use “movie-title” because it describes the meaning of the element as opposed to its ordering which could change. In general, generating robust CSS selectors is a non trivial task even for humans.   
+Our CSS selector synthesis algorithms guarantee the synthesis of a valid selector if it is present because of its exhaustive nature. However, it does not guarantee that the synthesized selector is robust. Take column elements corresponding to a column of movie titles whose `class` attribute has a  value of “column-1  movie-title”. Our algorithm would synthesize “column-1” as the column selector because it would be first class in the generated class combination list and it selects all the column elements. An inexperienced programmer writing code to scrape the column elements could also use “column-1” for the similar reasons. However, an experienced programmer would likely know to use “movie-title” because it describes the meaning of the element as opposed to its ordering which could change. In general, generating robust CSS selectors is a non trivial task even for humans.
 
 Another shortcoming of our CSS synthesis algorithms is their reliance on the `class` attribute. CSS selectors can comprise various combinations of an element’s full set of attributes. For example, a desired set of link elements could not have a `class` attribute but could be selected based on the value of their `href` attribute using a selector like `a[href*=”/stars”]`. This would select link elements whose `href` attribute ends with “/stars”. Again, this is a task that is non trivial even for humans. Rousillon [], an end-user web scraping system that also utilizes programming-by-demonstration, uses Ringer [] to select elements by saving all of their attributes during scraping and comparing them to candidate elements during selection. While this is more robust because it considers all of an element's attributes, this does not fit our approach of representing selectors as formulas that can be modified by users. To handle the cases in which elements do not have a `class` attribute, our algorithms generate index-based selectors using the `nth-child` notation which accurately select the given element but are not robust as the addition or removal of an element in the DOM could invalidate it.
 
@@ -148,7 +148,7 @@ In general terms, functional reactive programming (FRP) is the combination of fu
 
 FRP has seen wide adoption in end-user programming through implementations such as spreadsheet formula languages (Microsoft Excel & Google Sheets) and formula languages for low-code programming environments (Microsoft Power Fx, Google AppSheets, Glide, Coda & Gneiss).
 
-Because of this, data-driven web customization already provides functional reactive programming via a spreadsheet-like formula language aimed at increasing the expressiveness of customizations. The language provides formulas to encapsulate logic, perform operations on strings, call browser APIs and even invoke web APIs. As per the FRP paradigm, users only have to think in terms of manipulating the data in the table without having to worry about traditional programming concepts such as variables and data flow. This makes it easier for them to program customizations in a declarative manner without having to think about all the steps that have to take place to make this possible. 
+Because of this, data-driven web customization already provides functional reactive programming via a spreadsheet-like formula language aimed at increasing the expressiveness of customizations. The language provides formulas to encapsulate logic, perform operations on strings, call browser APIs and even invoke web APIs. As per the FRP paradigm, users only have to think in terms of manipulating the data in the table without having to worry about traditional programming concepts such as variables and data flow. This makes it easier for them to program customizations in a declarative manner without having to think about all the steps that have to take place to make this possible.
 
 Our unified model for web scraping and customizations extends this formula language to mitigate the limitations of programming by demonstration. Demonstrations are represented as formulas containing the corresponding, synthesized web scraping code as a CSS selector. As with other formulas in the language, web scraping formulas can be modified (or authored from scratch) and run to achieve more expressive web scraping. We can see this in the Ebay example in [@sec:examples] when the user manually authors a formula to scrape the value of XXX.
 
@@ -173,7 +173,35 @@ This type of mixed-initiative interaction can be seen in other programming-by-ex
 
 ## User Study
 
-## Cognitive Dimensions Of Notation
+## Cognitive Dimensions Analysis
+
+*GL note: This is, obviously, still an outline, to be turned into prose*
+
+- CDs is commonly used to evaluate HCI systems (cite the Lyra 2 citations etc)
+- Here we evaluate our tool along some salient dimensions to compare/contrast to other tools, including 1) traditional scraping by writing code, 2) other end-user scraping and customization systems.
+- **Progressive evaluation**: work up to this point can be checked at any time.
+  - Wildcard allows for immediately seeing results of scraping and customization after every single action.
+  - Contrast:
+	  - traditional scraping tools: change the code; manually reload / re-run
+	  - Helena / Vegemite: need to perform the whole demonstration before you see how it generalizes (this is mainly because they have to navigate across pages, so they can't provide such low latency; we benefit from only scraping one page)
+- **Premature commitment**: constraints on the order of doing things
+	- In most traditional scraping workflows, scraping must happen first (eg into a spreadsheet) and then using the data happens later. Need to commit to _what data you will need_
+	- In our model, you can scrape new data on demand, as you realize you need it for your desired customization
+	- A minor thing: don't even need to name columns, just like spreadsheets. (We acknowledge it would be useful to add column naming as an optional feature)
+- **Provisionality**: degree of commitment to actions
+	- The hover state lets the user preview what's going to happen before they actually commit to scraping it
+	- If you don't like what happened after you "commit", still easy to back out and edit/remove the column
+- **Viscosity**: resistance to change
+	- Can re-demonstrate just one part of the scraper
+	- Can even just change part of a formula (is this relevant?)
+	- Contrast: In Helena, you have to re-demonstrate the whole thing if you want to, say, change a selector. So it's hard to make small changes.
+
+Not sure whether to include these:
+
+- **Role-expressiveness**: the purpose of an entity is readily inferred
+	- This is an area of improvement for the system. We don't differentiate much between scraping code and customization code / DOM element values vs normal values.
+- **Hidden dependencies**: as in spreadsheets, dependencies between cells are hidden; there are also hidden dependencies from the DOM to the table. In practice not a huge problem though?
+
 
 # Related Work {#sec:related-work}
 
