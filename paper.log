@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  16 APR 2021 14:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  18 APR 2021 21:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -919,7 +919,7 @@ ertineT.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/libertine/Li
 nLibertineTB.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/liberti
 ne/LinLibertineTI.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/ne
 wtx/txsys.pfb>
-Output written on paper.pdf (3 pages, 416545 bytes).
+Output written on paper.pdf (3 pages, 416560 bytes).
 PDF statistics:
  194 PDF objects out of 1000 (max. 8388607)
  169 compressed objects within 2 object streams
