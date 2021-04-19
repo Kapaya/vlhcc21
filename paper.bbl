@@ -2,7 +2,7 @@
 %%% Do NOT edit. File created by BibTeX with style
 %%% ACM-Reference-Format-Journals [18-Jan-2012].
 
-\begin{thebibliography}{1}
+\begin{thebibliography}{4}
 
 %%% ====================================================================
 %%% NOTE TO THE USER: you can override these defaults by providing
@@ -52,6 +52,57 @@
 \showISBNx{978-1-4503-6708-0}
 \urldef\tempurl%
 \url{https://doi.org/10.1145/3313831.3376442}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Huynh, Miller, and Karger}{Huynh
+  et~al\mbox{.}}{[n.d.]}]%
+        {huynh2006}
+\bibfield{author}{\bibinfo{person}{David~F. Huynh}, \bibinfo{person}{Robert~C.
+  Miller}, {and} \bibinfo{person}{David~R. Karger}.}
+  \bibinfo{year}{[n.d.]}\natexlab{}.
+\newblock \showarticletitle{Enabling Web Browsers to Augment Web Sites'
+  Filtering and Sorting Functionalities}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 19th Annual {{ACM}} Symposium on
+  {{User}} Interface Software and Technology - {{UIST}} '06}} ({Montreux,
+  Switzerland}, 2006). \bibinfo{publisher}{{ACM Press}}, \bibinfo{pages}{125}.
+\newblock
+\showISBNx{978-1-59593-313-3}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/1166253.1166274}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Kushmerick}{Kushmerick}{[n.d.]}]%
+        {kushmerick2000}
+\bibfield{author}{\bibinfo{person}{Nicholas Kushmerick}.}
+  \bibinfo{year}{[n.d.]}\natexlab{}.
+\newblock \showarticletitle{Wrapper Induction: {{Efficiency}} and
+  Expressiveness}.
+\newblock  \bibinfo{volume}{118}, \bibinfo{number}{1}
+  (\bibinfo{year}{[n.\,d.]}), \bibinfo{pages}{15--68}.
+\newblock
+\showISSN{0004-3702}
+\urldef\tempurl%
+\url{https://doi.org/10.1016/S0004-3702(99)00100-9}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Lin, Wong, Nichols, Cypher, and Lau}{Lin
+  et~al\mbox{.}}{[n.d.]}]%
+        {lin2009}
+\bibfield{author}{\bibinfo{person}{James Lin}, \bibinfo{person}{Jeffrey Wong},
+  \bibinfo{person}{Jeffrey Nichols}, \bibinfo{person}{Allen Cypher}, {and}
+  \bibinfo{person}{Tessa~A. Lau}.} \bibinfo{year}{[n.d.]}\natexlab{}.
+\newblock \showarticletitle{End-User Programming of Mashups with Vegemite}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 14th International Conference on
+  {{Intelligent}} User Interfaces}} ({New York, NY, USA}, 2009-02-08)
+  \emph{(\bibinfo{series}{{{IUI}} '09})}. \bibinfo{publisher}{{Association for
+  Computing Machinery}}, \bibinfo{pages}{97--106}.
+\newblock
+\showISBNx{978-1-60558-168-2}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/1502650.1502667}
 \showDOI{\tempurl}
 
 

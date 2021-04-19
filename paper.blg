@@ -13,45 +13,51 @@ Reallocated glb_str_end (elt_size=4) to 20 items from 10.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Warning--empty year in drosos2020
 Warning--empty address in drosos2020
-You've used 1 entry,
+Warning--empty year in huynh2006
+Warning--empty address in huynh2006
+Warning--empty year in kushmerick2000
+Warning--no journal in kushmerick2000
+Warning--empty year in lin2009
+Warning--empty address in lin2009
+You've used 4 entries,
             5945 wiz_defined-function locations,
-            1336 strings with 15070 characters,
-and the built_in function-call counts, 1376 in all, are:
-= -- 118
-> -- 63
+            1368 strings with 16051 characters,
+and the built_in function-call counts, 4698 in all, are:
+= -- 439
+> -- 187
 < -- 0
-+ -- 21
-- -- 20
-* -- 116
-:= -- 155
-add.period$ -- 5
-call.type$ -- 1
-change.case$ -- 9
-chr.to.int$ -- 1
-cite$ -- 3
-duplicate$ -- 109
-empty$ -- 79
-format.name$ -- 24
-if$ -- 294
++ -- 60
+- -- 60
+* -- 387
+:= -- 512
+add.period$ -- 20
+call.type$ -- 4
+change.case$ -- 30
+chr.to.int$ -- 4
+cite$ -- 12
+duplicate$ -- 413
+empty$ -- 298
+format.name$ -- 72
+if$ -- 1067
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 5
-newline$ -- 51
-num.names$ -- 8
-pop$ -- 66
+missing$ -- 19
+newline$ -- 85
+num.names$ -- 32
+pop$ -- 235
 preamble$ -- 1
-purify$ -- 12
+purify$ -- 42
 quote$ -- 0
-skip$ -- 32
+skip$ -- 121
 stack$ -- 0
-substring$ -- 70
-swap$ -- 11
+substring$ -- 280
+swap$ -- 47
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 30
-warning$ -- 2
-while$ -- 7
+type$ -- 106
+warning$ -- 8
+while$ -- 30
 width$ -- 0
-write$ -- 60
-(There were 2 warnings)
+write$ -- 124
+(There were 8 warnings)
