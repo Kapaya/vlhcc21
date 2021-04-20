@@ -102,7 +102,7 @@ Web scraping formulas for rows have the following form:
 
 The parameter `<selector>` refers to a CSS selector. Our CSS selector synthesis algorithm generate class-based selectors, falling back to index-based selectors (which utilize the `nth-child` notation) if the given elements do not have a `class` attribute. The name of the formula matches the `querySelector` method avaliable on DOM elements and should thus be familiar to programmers that write web scraping code in Javascript. The web scraping formula for rows is used in a hidden column of the table named `rowElement` for which each column cell corresponds to the row element representing the table row. The column is hidden as it serves as a reference for web scraping formulas for columns that contain the actual table data. We are exploring whether there would be value in making it visible which starts from figuring out how to reprsent a DOM element as a text value in a table cell.
 
-Web scraping formulas for columns have the following  form: 
+Web scraping formulas for columns have the following  form:
 
 `=QuerySelector(rowElement, <selector>)`
 
@@ -137,7 +137,7 @@ The row-sibling constraint we mentioned earlier is important for the end goal of
 
 Our CSS selector synthesis algorithm guarantee the synthesis of a valid class-based selector if it is present because of its exhaustive nature. However, it does not guarantee that the synthesized selector is robust. Take column elements corresponding to a column of movie titles whose `class` attribute has a  value of “column-1  movie-title”. Our algorithm would synthesize “column-1” as the column selector because it would be the first class in the generated class combination list and it selects all the column elements. An inexperienced programmer writing code to scrape the column elements could also use “column-1” for similar reasons. However, an experienced programmer would likely know to use “movie-title” because it describes the meaning of the element as opposed to its ordering which could change. In general, generating robust selectors is a non trivial task [@furche2016] which is made even harder by the ambigous nature of demonstrations as specifications for program synthesis [@peleg2018].
 
-Another shortcoming of our CSS synthesis algorithm is their reliance on the `class` attribute. CSS selectors can comprise various combinations of an element’s full set of attributes. For example, a desired set of link elements could not have a `class` attribute but could be selected based on the value of their `href` attribute using a selector like `a[href*=”/id”]`. This would select a link element whose `href` attribute ends with “/id” for example. Again, this is a non trivial task. Rousillon [@chasins2018], an end-user web scraping system that also utilizes programming-by-demonstration, uses Ringer [@barman2016] to select elements by saving all of their attributes during scraping and comparing them to candidate elements during selection. While this is more robust because it considers all of an element's attributes, this does not fit our approach of representing selectors as formulas that can be viewed and modified by programmers. 
+Another shortcoming of our CSS synthesis algorithm is their reliance on the `class` attribute. CSS selectors can comprise various combinations of an element’s full set of attributes. For example, a desired set of link elements could not have a `class` attribute but could be selected based on the value of their `href` attribute using a selector like `a[href*=”/id”]`. This would select a link element whose `href` attribute ends with “/id” for example. Again, this is a non trivial task. Rousillon [@chasins2018], an end-user web scraping system that also utilizes programming-by-demonstration, uses Ringer [@barman2016] to select elements by saving all of their attributes during scraping and comparing them to candidate elements during selection. While this is more robust because it considers all of an element's attributes, this does not fit our approach of representing selectors as formulas that can be viewed and modified by programmers.
 
 To handle the cases in which elements do not have a `class` attribute, our algorithm generate index-based selectors using the `nth-child` notation. This accurately select the given element but is not robust as the addition or removal of an element in the DOM could invalidate the selector.
 
@@ -188,33 +188,25 @@ Our unified model for web scraping and customization offers mixed-initiative int
 
 ## Cognitive Dimensions Analysis
 
-*GL note: This is, obviously, still an outline, to be turned into prose*
+*GL note: I keep saying "our system" or "our tool" below, is there a better way to refer to it? Should we name it the Wildcard Scraper UI or something?*
 
-- CDs is commonly used to evaluate HCI systems (cite the Lyra 2 citations etc)
-- Here we evaluate our tool along some salient dimensions to compare/contrast to other tools, including 1) traditional scraping by writing code, 2) other end-user scraping and customization systems.
-- **Progressive evaluation**: work up to this point can be checked at any time.
-  - Wildcard allows for immediately seeing results of scraping and customization after every single action.
-  - Contrast:
-	  - traditional scraping tools: change the code; manually reload / re-run
-	  - Helena / Vegemite: need to perform the whole demonstration before you see how it generalizes (this is mainly because they have to navigate across pages, so they can't provide such low latency; we benefit from only scraping one page)
-- **Premature commitment**: constraints on the order of doing things
-	- In most traditional scraping workflows, scraping must happen first (eg into a spreadsheet) and then using the data happens later. Need to commit to _what data you will need_
-	- In our model, you can scrape new data on demand, as you realize you need it for your desired customization
-	- A minor thing: don't even need to name columns, just like spreadsheets. (We acknowledge it would be useful to add column naming as an optional feature)
-- **Provisionality**: degree of commitment to actions
-	- The hover state lets the user preview what's going to happen before they actually commit to scraping it
-	- If you don't like what happened after you "commit", still easy to back out and edit/remove the column
-- **Viscosity**: resistance to change
-	- Can re-demonstrate just one part of the scraper
-	- Can even just change part of a formula (is this relevant?)
-	- Contrast: In Helena, you have to re-demonstrate the whole thing if you want to, say, change a selector. So it is hard to make small changes.
+In this section, we evaluate our system using the Cognitive Dimensions of Notation (cite), a heuristic evaluation framework that has been used to evaluate programming languages and visual programming systems (cite). When contrasting our tool with traditional scraping and other visual tools, we find particularly meaningful differences along several of the dimensions:
 
-Not sure whether to include these:
+*Progressive evaluation.* In our tool, a user can see the intermediate results of their scraping and customization work at any point, and adjust their future actions accordingly. The table UI makes it easy to inspect the intermediate results and notice surprises like missing values.
 
-- **Role-expressiveness**: the purpose of an entity is readily inferred
-	- This is an area of improvement for the system. We don't differentiate much between scraping code and customization code / DOM element values vs normal values.
-- **Hidden dependencies**: as in spreadsheets, dependencies between cells are hidden; there are also hidden dependencies from the DOM to the table. In practice not a huge problem though?
+In contrast, traditional scraping typically requires editing the code, manually re-running it, and inspecting the results in an unstructured textual format, making it harder to progressively evaluate the results. Also, many end-user scraping tools (Helena and Vegemite, cite these) require the user to demonstrate all the data extractions they want to perform before showing any information about how those demonstrations will generalize across multiple examples.^[This is an instance where Wildcard's limitation of only scraping a single page at a time proves beneficial. All the relevant data is already available on the page without further network requests, making it possible to support progressive evaluation with low latency. Other tools that support scraping across multiple pages necessarily require a slower feedback loop.]
 
+*Premature commitment.* Many scraping tools require making a _premature commitment_ to a data schema: first, the user extracts a dataset, and then they perform downstream analysis or customization using that data. Our previous versions of Wildcard suffered from this problem: when writing code for a scraping adapter, a user would need to try to anticipate all future customizations and extract the necessary data.
+
+Our current system instead supports extracting data _on demand_. The user can decide on their desired customizations and data transformations, and extract data as needed to fulfill those tasks. There is never a need to eagerly guess what data will be needed in advance.
+
+We have also borrowed a technique from spreadsheets for avoiding premature commitment: default naming. New data columns are automatically assigned a single-letter name, so that the user does not need to prematurely think of a name before extracting the data. (We have not yet implemented the capability to optionally rename demonstrated columns, but it would be straightforward to do so, and would provide a way to offer the benefits of names without requiring a premature commitment.)
+
+*Provisionality.* Our tool makes it easy to try out a scraping action without fully committing to it. When the user hovers over any element in the page, they see a preview of how that data would be entered into the table, and then they can click if they'd like to proceed. This makes it feel very fast and lightweight to try scraping different elements on the page.
+
+*Viscosity.* Some scraping tools have high viscosity: they make it difficult to change a single part of a scraping specification without modifying the global structure. For example, in Helena (cite), changing the desired demonstration for a single column of a table requires re-demonstrating all of the columns (todo: make 100% sure this is true). In contrast, our system allows a user to change the specification for a single column of a table without modifying the others, resulting in a lower viscosity in response to changes.
+
+*Role-expressiveness.* One dimension we are still exploring in our tool is role-expressiveness: having different elements of a program clearly indicate their role to the user. In particular, in our current design, the visual display of references to DOM elements in the table is similar to the display of primitive values. In our experience, this can sometimes make it difficult to understand which parts of the table are directly interacting with the page, vs. processing the downstream results. In the future we could consider adding more visual differentiation to help users understand the role of different parts of their customization.
 
 # Related Work {#sec:related-work}
 
