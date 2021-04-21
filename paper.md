@@ -34,6 +34,24 @@ To test the viability of our unified model for web scraping and customization, w
 
 
 # Motivating Example {#sec:examples}
+To concretely illustrate the user experience of using a unified model of demonstrations and formulas to scrape and customize a webpage, we present a scenario of customizing eBay, a popular online marketplace. The goal of the user, Jen, is to filter out product listings that are sponsored results. @fig:ebay shows accompanying screenshots.
+
+<div class="pdf-only">
+\begin{figure*}
+  \includegraphics[width=\textwidth]{media/ebay.png}
+  \caption{\label{fig:ebay}Scraping and customizing eBay by unified demonstration and formulas.}
+\end{figure*}
+</div>
+
+**Scraping Names by Demonstration**: Jen starts the adapter creation process by clicking a context menu item within the eBay.com page, then hovering over the listing name data value that she would like to scrape. The system provides live feedback as Jen hovers: it annotes the row of data with a border, highlights the column of data in the page with a green background, and displays how the values will appear in the data table. She commits the action by clicking.
+
+In the table, Jen can see that her scraped data is represented by a synthesized formula: `QuerySelector(rowElement, “h3.s-item__title”)`. Wildcard calls this formula on each listing on the page (each `rowElement`) to get the child element that corresponds to the specified CSS selector (`“h3.s-item__title”`). Wildcard exposes this formula to the user to exemplify that **functional reactive programming** is the underlying design principle and to provide a template for scraping with formulas.
+
+**Scraping Sponsored Labels with Formulas**: Next, Jen attempts to scrape the “Sponsored” label into a new column using demonstration, but she is unable to scrape more than one letter of the word at a time. By inspecting the page’s source code using her brower’s developer console, Jen finds that eBay developers have inserted invisible letters between the visible letters of “Sponsored,” which is likely an effort to obfuscate the word from ad blockers and web scrapers. Scraping by demonstration is insufficient because pointing and clicking cannot distinguish between whether the desired target is a child element (a single character) or the parent element (the full word, which is what Jen wants). 
+
+Jen can overcome this insufficiency by writing her own formula to target the parent element, using our system’s support of **mixed-initiative interaction**. She copies and pastes the formula from the previous column (which was synthesized by demonstration) into a new column, then she replaces the CSS selector with the selector of the parent element, which she identifies in the developer console. She presses enter to commit this formula, and the column populates with the text content of the scraped element.
+
+**Filtering Sponsored Results**: In the column that she just scraped, Jen sees that all of the sponsored results appear as garbled text, whereas the non-sponsored results appear as the word “Sponsored.” Thus, in a new column, she is able to write a new formula that returns whether or not the previous column’s text includes the word “Sponsored.” Then, she is immediately able to sort the listings by whether or not they are sponsored by sorting this column, in order to hide sponsored results from view. This customization is possible because Wildcard provides a **unified user model**.
 
 
 # System Implementation {#sec:implementation}
