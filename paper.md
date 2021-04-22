@@ -57,7 +57,7 @@ Jen can overcome this insufficiency by writing her own formula to target the con
 
 **Filtering Sponsored Results** (@fig:ebay Part C): In the column that she just scraped, Jen sees that all of the sponsored results appear as garbled text, whereas the non-sponsored results appear as the word “Sponsored.” Thus, in a new column, she is able to write a new formula that returns whether or not the previous column’s text includes the word “Sponsored.” Then, she is immediately able to sort the listings by whether or not they are sponsored by sorting this column, thus hiding sponsored results from view. This customization is possible because Wildcard provides a **unified user model**.
 
-In this way, Jen is able to use our system to customize the eBay website, without needing to learn how to program in JavaScript and without even leaving the webpage. We think that our model of customization by unified demonstration and formulas is flexible enough to support a wide range of other useful modifications and web programming proficiency levels, and we present a greater variety of use cases in {#sec:evaluation}.
+In this way, Jen is able to use our system to customize the eBay website, without needing to learn how to program in JavaScript and without even leaving the webpage. We think that our model of customization by unified demonstration and formulas is flexible enough to support a wide range of other useful modifications and web programming proficiency levels, and we present a greater variety of use cases in [@sec:evaluation].
 
 
 # System Implementation {#sec:implementation}
