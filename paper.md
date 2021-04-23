@@ -11,6 +11,13 @@ secPrefix:
     - "Section"
     - "Sections"
 abstract: |
+
+A range of prior research has developed systems that have made web customization more accessible to end-users. Web scraping, the process of extracting structured data from a website, is a common building block among them. It is achieved either via programming-by-demonstration (accessible to end-users but not expressive enough to specify complex scraping tasks) or via traditional programming (expressive but not accessible to end-users).
+
+In this paper, we present a new model for web scraping for customization that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. The web scraping program synthesized via programming-by-demonstration is presented as a Cascading Style Sheet (CSS) selector in a spreadsheet formula language. Crucially, these synthesized CSS selectors can be directly edited to specify scraping operations which can not be achieved via programming-by-demonstration alone.
+
+To illustrate our model, we implement it as an extension of Wildcard, an end-user customization system based on interactions with an in-website spreadsheet table. Because customizations in Wildcard are expressed as spreadsheet formulas, we go beyond a model that combines web scraping by demonstration and traditional programming to a unified model for web scraping *and* customization. Through concrete examples and a user study, we show how our model enables web customization on a wider range of websites and provides a more incremental approach to web scraping for customization.
+
 ---
 
 # Introduction {#sec:introduction}
@@ -19,7 +26,7 @@ Many websites on the internet do not meet the exact needs of all of their users.
 
 A common building block of these end-user web customization systems is web scraping, the extraction of structured data from websites. They achieve web scraping in one of two ways: by demonstration (Sifter & Vegemite) and by programming (Wildcard). Web scraping by demonstration automates the web scraping process by utilizing program synthesis to synthesize a web scraping program from user demonstrations. This approach is accessible to end-users with no programming experience and enables them to fully participate in the customization lifecycle. However, web scraping by demonstration comes at the cost of expressiveness which is vital for complex web scraping tasks. On the other side, web scraping by programming involves programmers manually writing web scraping code. It is fully expressive but not accessible to end-users who can only customize websites that programmers have written web scraping code for. This friction between designing for both ease of use and expressiveness is a general problem with software interfaces as discussed by Chugh [@chugh2016a].
 
-In this paper, we propose a new model for web scraping for customization that combines the ease of use of demonstrations and the expressiveness of programming in the environment of a spreadsheet-like table with a simple formula language. Users demonstrate to scrape and the system presents the synthesized web scraping program as a Cascading Style Sheet (CSS) selector in the table's formula language ([@sec:implementation]). More importantly, these web scraping formulas can be directly edited to specify complex scraping operations which can not be achieved by demonstrations alone.
+In this paper, we present a new model for web scraping for customization that combines the ease of use of demonstrations and the expressiveness of programming in the environment of a spreadsheet-like table with a simple formula language. Users demonstrate to scrape and the system presents the synthesized web scraping program as a Cascading Style Sheet (CSS) selector in the table's formula language ([@sec:implementation]). More importantly, these web scraping formulas can be directly edited to specify complex scraping operations which can not be achieved by demonstrations alone.
 
 We have implemented this new model of web scraping as an extension of Wildcard which previously only supported web scraping by programming. Wildcard enables web customization by direct manipulation of a spreadsheet-like table it adds to websites. The table contains the website's underlying structured data and is bidirectionally synchronized with it. This means that changes to the table, including sorting, filtering, adding columns and running computations in a spreadsheet formula language, are propagated to the website thereby customizing it.
 
