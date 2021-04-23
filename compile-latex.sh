@@ -3,13 +3,11 @@ set -e
 pandoc \
   --filter conditional-render \
   --filter pandoc-crossref \
-  --citeproc \
-  --bibliography=references-bibtex.bib\
   -s \
   -o \
   paper.tex \
-  --template=templates/sigconf.pandoc \
   --natbib \
+  --template=ieee.pandoc \
   --metadata=format:pdf \
   paper.md
 
