@@ -12,11 +12,12 @@ secPrefix:
     - "Sections"
 abstract: |
 
-A range of prior research has developed systems that have made web customization more accessible to end-users. Web scraping, the process of extracting structured data from a website, is a common building block among them. It is achieved either via programming-by-demonstration (accessible to end-users but not expressive enough to specify complex scraping tasks) or via traditional programming (expressive but not accessible to end-users).
+Web scraping, the process of extracting structured data from a website, is a common building block of web customization systems. Prior approaches have allowed users to perform web scraping by directly demonstrating examples, but this typically doesn’t allow for as much expressiveness as traditional programming.
 
-In this paper, we present a new model for web scraping for customization that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. The web scraping program synthesized via programming-by-demonstration is presented as a Cascading Style Sheet (CSS) selector in a spreadsheet formula language. Crucially, these synthesized CSS selectors can be directly edited to specify scraping operations which can not be achieved via programming-by-demonstration alone.
+In this paper, we present a new interaction model for web scraping that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. When a user demonstrates examples of data to extract, a web scraping program is synthesized and presented as a spreadsheet formula. Crucially, the user can also directly edit the formula, allowing them to specify scraping operations which can not be achieved via demonstration alone.
 
-To illustrate our model, we implement it as an extension of Wildcard, an end-user customization system based on interactions with an in-website spreadsheet table. Because customizations in Wildcard are expressed as spreadsheet formulas, we go beyond a model that combines web scraping by demonstration and traditional programming to a unified model for web scraping *and* customization. Through concrete examples and a user study, we show how our model enables web customization on a wider range of websites and provides a more incremental approach to web scraping for customization.
+To illustrate our model, we implement it as a browser extension called Joker. Through concrete examples and a small user study, we show how Joker enables users to scrape and customize websites more flexibly than in prior systems.
+
 
 ---
 
