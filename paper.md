@@ -11,13 +11,11 @@ secPrefix:
     - "Section"
     - "Sections"
 abstract: |
+ Web scraping, the process of extracting structured data from a website, is a common building block of web customization systems. Prior approaches have allowed users to perform web scraping by directly demonstrating examples, but this typically doesn’t allow for as much expressiveness as traditional programming.
 
-Web scraping, the process of extracting structured data from a website, is a common building block of web customization systems. Prior approaches have allowed users to perform web scraping by directly demonstrating examples, but this typically doesn’t allow for as much expressiveness as traditional programming.
+ In this paper, we present a new interaction model for web scraping that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. When a user demonstrates examples of data to extract, a web scraping program is synthesized and presented as a spreadsheet formula. Crucially, the user can also directly edit the formula, allowing them to specify scraping operations which can not be achieved via demonstration alone.
 
-In this paper, we present a new interaction model for web scraping that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. When a user demonstrates examples of data to extract, a web scraping program is synthesized and presented as a spreadsheet formula. Crucially, the user can also directly edit the formula, allowing them to specify scraping operations which can not be achieved via demonstration alone.
-
-To illustrate our model, we implement it as a browser extension called Joker. Through concrete examples and a small user study, we show how Joker enables users to scrape and customize websites more flexibly than in prior systems.
-
+ To illustrate our model, we implement it as a browser extension called Joker. Through concrete examples and a small user study, we show how Joker enables users to scrape and customize websites more flexibly than in prior systems.
 
 ---
 
@@ -25,19 +23,19 @@ To illustrate our model, we implement it as a browser extension called Joker. Th
 
 Many websites on the internet do not meet the exact needs of all of their users. Because of this, millions of people use browser extensions like Greasemonkey [@zotero-224] and Tampermoneky [@zotero-191] to install userscripts, snippets of Javascript code which customize the behavior of websites. To make web customization more accessible to end-users without knowledge of programming, researchers have developed systems like Sifter [@huynh2006], Vegemite [@lin2009] and Wildcard [@litt2020; @litt2020b].
 
-A common building block of these end-user web customization systems is web scraping, the extraction of structured data from websites. They achieve web scraping in one of two ways: by demonstration (Sifter & Vegemite) and by programming (Wildcard). Web scraping by demonstration automates the web scraping process by utilizing program synthesis to synthesize a web scraping program from user demonstrations. This approach is accessible to end-users with no programming experience and enables them to fully participate in the customization lifecycle. However, web scraping by demonstration comes at the cost of expressiveness which is vital for complex web scraping tasks. On the other side, web scraping by programming involves programmers manually writing web scraping code. It is fully expressive but not accessible to end-users who can only customize websites that programmers have written web scraping code for. This friction between designing for both ease of use and expressiveness is a general problem with software interfaces as discussed by Chugh [@chugh2016a].
+A common building block of these web customization systems is web scraping, the extraction of structured data from websites. They achieve web scraping in one of two ways: by demonstration (Sifter & Vegemite) and by programming (Wildcard). Web scraping by demonstration automates the web scraping process by utilizing program synthesis to synthesize a web scraping program from user demonstrations. This approach is accessible to end-users with no programming experience and enables them to fully participate in the customization lifecycle. However, web scraping by demonstration comes at the cost of expressiveness which is vital for complex web scraping tasks. On the other side, web scraping by traditional programming involves programmers manually writing web scraping code. It is fully expressive but not accessible to end-users who can only customize websites that programmers have written web scraping code for. This friction between designing for both ease of use and expressiveness is a general problem with software interfaces as discussed by Chugh [@chugh2016a].
 
 In this paper, we present a new model for web scraping for customization that combines the ease of use of demonstrations and the expressiveness of programming in the environment of a spreadsheet-like table with a simple formula language. Users demonstrate to scrape and the system presents the synthesized web scraping program as a Cascading Style Sheet (CSS) selector in the table's formula language ([@sec:implementation]). More importantly, these web scraping formulas can be directly edited to specify complex scraping operations which can not be achieved by demonstrations alone.
 
-We have implemented this new model of web scraping as an extension of Wildcard which previously only supported web scraping by programming. Wildcard enables web customization by direct manipulation of a spreadsheet-like table it adds to websites. The table contains the website's underlying structured data and is bidirectionally synchronized with it. This means that changes to the table, including sorting, filtering, adding columns and running computations in a spreadsheet formula language, are propagated to the website thereby customizing it.
+We have implemented this new model of web scraping as an extension of Wildcard [@litt2020; @litt2020b] which only supports web scraping by programming. Wildcard enables web customization by direct manipulation of a spreadsheet-like table it adds to websites. The table contains the website's underlying structured data and is bidirectionally synchronized with it. This means that changes to the table, including sorting, adding columns and running computations in a spreadsheet formula language, are propagated to the website thereby customizing it.
 
-By representing the output of demonstrations as formulas, our new web scraping model fit right into Wildcard's customization paradigm which utilizes formulas for web customization. This enabled us to go beyond providing a model that combined web scraping by demonstration with web scraping by programming to providing a model that combined web scraping *and* customization. We refer to this as a *unified model for web scraping and customization*. In [@sec:examples], we show how this leads to a more incremental approach to building web customizations.
+By representing the output of demonstrations as formulas, our new web scraping model fit right into Wildcard's customization paradigm which utilizes formulas for web customization. This enabled us to go beyond providing a model that combined web scraping by demonstration with web scraping by programming to providing a model that combined web scraping *and* customization. We refer to this as a *unified model for web scraping and customization*. In [@sec:examples], we show how this enables users to scrape and customize websites more flexibly than in prior systems.
 
 Our contributions are as follows:
 
-- A **unified model for web scraping and customization** that combines web scraping (by demonstration and programing) with web customization through a shared spreadsheet formula language
-- A novel combination of design principles (**Unified User Model**, **Functional Reactive Programming** and **Mixed-Initiative Interaction**) which make our unified model for web scraping and customization seamless for both web scraping and web customization ([@sec:design-principles])
-- An example gallery of websites that can be customized via our unified model for web scraping and customization and a preliminary user study providing some qualitative results of using it ([@sec:evaluation])
+- A unified model for web scraping and customization that combines web scraping (by demonstration and programing) with web customization through a shared spreadsheet formula language
+- An implementation of the unified model for web scraping and customization that combines key design principles in a novel way ([@sec:design-principles])
+- An evaluation of the model via a preliminary user study that provides some qualitive results of using of it, an example gallery of websites that the model works on and doesn't work on and a cognitive dimensions of notation analysis of the model ([@sec:evaluation])
 
 # Motivating Example {#sec:examples}
 To concretely illustrate the user experience of using a unified model of demonstrations and formulas to scrape and customize a webpage, we present a scenario of customizing eBay, a popular online marketplace. The goal of the user, Jen, is to filter out search results that are sponsored. On the webpage, sponsored product listings are marked with a "Sponsored" label that Jen can try to scrape, then she can sort the scraped labels to move all sponsored results to the bottom of the page. @fig:ebay shows accompanying screenshots.
@@ -70,7 +68,45 @@ In this way, Jen is able to use our system to customize the eBay website, withou
 
 # System Implementation {#sec:implementation}
 
-We implemented our unified model for web scraping and customization as an extension to Wildcard [@litt2020; @litt2020b]. Prior to this work, web scraping code, referred to as *adapters* going forward, were manually written in Javascript by programmers. Now, adapters can be created via demonstration and are represented in a spreadsheet formula language which can be modified. We start by describing our implementation of *wrapper induction* [@kushmerick2000] which is what enables our system to generalize from the demonstration of a single column value to the entire set of column values. Then, we describe how our system synthesizes CSS selectors which select the elements to be scrapped. Finally, we briefly discuss how the unified user model is achieved and close with notable limitations of our current approach.
+We start by describing the formula language used to represent web scraping programs. Then, we discuss the algorithm we use to generate the CSS selectors we present in the web scraping formulas. Finally, we present the *wrapper induction* [@kushmerick2000] algorithm that synthesizes the web scraping programs.
+
+## Web Scraping Formulas
+
+The formula language used to present web scraping formulas is similar to visual database query systems like SIEUFERD [@bakke2016] and Airtable [@zotero-228]. Formulas automatically apply across an entire column of data and reference other column names instead of values in specific rows. This is more efficient than users having to copy a formula across a column as in traditional spreadsheets like Microsoft Excel and Google Sheets. It of course comes at the cost of not being able to specify an operation for only a subset of columns but this hasn't yet come up in our use cases.
+
+Web scraping formulas for rows have the following form:
+
+`=QuerySelector(<selector>)`
+
+The parameter `<selector>` refers to a CSS selector. Our CSS selector synthesis algorithm generates class-based selectors, falling back to index-based selectors (which utilize the `nth-child` notation) if the given elements do not have a `class` attribute. The name of the formula matches the `querySelector` method available on DOM elements and should thus be familiar to programmers that write web scraping code in Javascript. The web scraping formula for rows is used in a hidden column of the table named `rowElement` for which each column cell corresponds to the row element representing the table row.
+
+Web scraping formulas for columns have the following  form:
+
+`=QuerySelector(rowElement, <selector>)`
+
+The parameter `rowElement` is a reference to the hidden column containing row elements and `<selector>` is a CSS selector as previously described. This form is consistent with Wildcard's existing customization formulas which reference column names to perform operations on each of the cells in the column.
+
+Representing web scraping code as web scraping formulas in the table allows programmers to not only view them to understand the outcome of the wrapper induction algorithm but also to modify them. Modifying a web scraping formula is as simply as editing the synthesized selector and executing the formula. Furthermore, programmers can manually author web scraping formulas in empty columns in a simpler fashion than the equivalent Javascript: all they have to do is determine the selectors of the desired data and the system will take care of iterating through rows and extracting values from the selected elements.
+
+## CSS Selector Synthesis Algorithm
+
+Our system synthesizes two types of CSS selectors: a single row selector that selects a set of DOM elements corresponding to individual rows of the table and a column selector for each column which selects the element containing the column value within a given row.
+
+For a given row element, it’s row selector is synthesized as follows:
+
+1. Generate a list of all possible combinations of the classes on the element’s `class` attribute and initialize their scores to 0. For example, an element with a `class` attribute value of “a b c” would generate “a”, “b”, “c”, “a b”, “b c” and  “a b c”
+2. Retrieve a list of all of the sibling elements of the element. For each sibling element, check whether its `class` attribute contains each of the generated class combinations. If a sibling’s `class` attribute contains a given class combination, the combination’s score is incremented by 1
+3. Pick the class combinations with the highest score across the element’s siblings and then select the combination with the fewest number of classes. For example, if the combinations with the highest score are “a” and “b c”, “a” will be picked. This is done to ensure that only the minimal required classes are used for selection
+4. Combine the tag name of the element with the final selector to further ensure that it only selects the desired row elements. For example, if the row element is has a tag name of `DIV` and the final selector is “a” the synthesized selector will be `div.a`
+
+For a given column element, it’s column selector is synthesized as follows:
+
+1. Generate a list of all possible combinations of the classes on the element’s `class` attribute, as previously described, and initialize their scores to 0
+2. For each class combination, check that it only selects a single element within the row element and that that element corresponds to the given column element. If a class combination satisfies the check, its score is incremented by 1
+3. Pick the class combinations with the highest score and then select the combination with the fewest number of classes as previously described
+4. Combine the tag name of the element with the final selector to further ensure that it only selects the desired column element as previously described
+
+One aspect of future work is saving the list of all valid selectors, instead of just picking one, and making them available to users to see and pick from. This would be similar to Mayer et el's user interaction model called *Program Navigation* [@mayer2015] that gives users the opportunity to navigate all valid, synthesized programs and pick the best one.
 
 ## Wrapper Induction Algorithm
 
@@ -103,113 +139,34 @@ The user performs a demonstration by clicking on element $a$ in @fig:algorithm c
 Notice how the *row-sibling* constraint simplifies the problem. Row candidates without siblings with parallel structure ($b1$ in @fig:algorithm) have $el_{siblings}$ = 0, thus disqualifying them.
 
 The algorithm stops traversing upwards once it reaches the `BODY` element. It chooses the element with the largest positive value of $el_{siblings}$ as the row element, preferring nodes lower in the tree as a tiebreaker. It then generates a _row selector_ which returns the row element and all its direct siblings. The final value of `selector` is the column selector since traverses from the row element to the demonstrated data value. These row and column selectors are then used to generate an adapter as a combination of formulas which returns the DOM elements corresponding to a data row in the table and sets up the bidirectional synchronization.
-
-## CSS Selector Synthesis Algorithm
-
-As part of the the wrapper induction process described in the previous section, our system synthesizes two types of CSS selectors: a single row selector that selects a set of DOM elements corresponding to individual rows of the table and a column selector for each column which selects the element containing the column value within a given row.
-
-For a given row element, it’s row selector is synthesized as follows:
-
-1. Generate a list of all possible combinations of the classes on the element’s `class` attribute and initialize their scores to 0. For example, an element with a `class` attribute value of “a b c” would generate “a”, “b”, “c”, “a b”, “b c” and  “a b c”
-2. Retrieve a list of all of the sibling elements of the element. For each sibling element, check whether its `class` attribute contains each of the generated class combinations. If a sibling’s `class` attribute contains a given class combination, the combination’s score is incremented by 1
-3. Pick the class combinations with the highest score across the element’s siblings and then select the combination with the fewest number of classes. For example, if the combinations with the highest score are “a” and “b c”, “a” will be picked. This is done to ensure that only the minimal required classes are used for selection
-4. Combine the tag name of the element with the final selector to further ensure that it only selects the desired row elements. For example, if the row element is has a tag name of `DIV` and the final selector is “a” the synthesized selector will be `div.a`
-
-For a given column element, it’s column selector is synthesized as follows:
-
-1. Generate a list of all possible combinations of the classes on the element’s `class` attribute, as previously described, and initialize their scores to 0
-2. For each class combination, check that it only selects a single element within the row element and that that element corresponds to the given column element. If a class combination satisfies the check, its score is incremented by 1
-3. Pick the class combinations with the highest score and then select the combination with the fewest number of classes as previously described
-4. Combine the tag name of the element with the final selector to further ensure that it only selects the desired column element as previously described
-
-One aspect of future work is saving the list of all valid selectors, instead of just picking one, and making them available to users to see and pick from. This would be similar to Mayer et el's user interaction model called *Program Navigation* [@mayer2015] that gives users the opportunity to navigate all valid, synthesized programs and pick the best one.
-
-## Web Scraping Formulas
-
-The wrapper induction algorithm described above results in the generation of a website adapter which consists of a combination of web scraping formulas in Wildcard's spreadsheet formula language. The language is similar to visual database query systems like SIEUFERD [@bakke2016] and Airtable [@zotero-228]. Formulas automatically apply across an entire column of data and reference other column names instead of values in specific rows. This is more efficient than users having to copy a formula across a column as in traditional spreadsheets like Microsoft Excel and Google Sheets. It of course comes at the cost of not being able to specify an operation for only a subset of columns but this hasn't yet come up in our use cases.
-
-Web scraping formulas for rows have the following form:
-
-`=QuerySelector(<selector>)`
-
-The parameter `<selector>` refers to a CSS selector. Our CSS selector synthesis algorithm generate class-based selectors, falling back to index-based selectors (which utilize the `nth-child` notation) if the given elements do not have a `class` attribute. The name of the formula matches the `querySelector` method available on DOM elements and should thus be familiar to programmers that write web scraping code in Javascript. The web scraping formula for rows is used in a hidden column of the table named `rowElement` for which each column cell corresponds to the row element representing the table row. The column is hidden as it serves as a reference for web scraping formulas for columns that contain the actual table data. We are exploring whether there would be value in making it visible which starts from figuring out how to represent a DOM element as a text value in a table cell.
-
-Web scraping formulas for columns have the following  form:
-
-`=QuerySelector(rowElement, <selector>)`
-
-The parameter `rowElement` is a reference to the hidden column containing row elements and `<selector>` is a CSS selector as previously described. This form is consistent with Wildcard's existing customization formulas which reference column names to perform operations on each of the cells in the column. The Javascript equivalent is:
-
-`rowElement.querySelector(<selector>)`
-
-Again, should be familiar to programmers that write web scraping code once they understand how the formula language works.
-
-Representing web scraping code as web scraping formulas in the table allows programmers to not only view them to understand the outcome of the wrapper induction algorithm but also to modify them. Modifying a web scraping formula is as simply as editing the synthesized selector and executing the formula. Furthermore, programmers can manually author web scraping formulas in empty columns in a simpler fashion than the equivalent Javascript: all they have to do is determine the selectors of the desired data and the system will take care of iterating through rows and extracting values from the selected elements.
-
-## Limitations
-
-Since our system is still under development, it has a variety of limitations. In this section we describe the most notable ones.
-
-### Wrapper Induction Algorithm
-
-The row-sibling constraint we mentioned earlier is important for the end goal of customization because row elements that are not direct siblings may not represent data on the website that should be related as part of the same table by customizations such as sorting and filtering. In @fig:limitations we demonstrate two examples where this limitation becomes relevant.
-
-<div class="pdf-only">
-\begin{figure*}
-  \includegraphics[width=\textwidth]{media/limitations.png}
-  \caption{\label{fig:limitations} Two example pages where our generalization algorithm does not currently work. The elements with the blue border correspond to rows of the data and the elements with green borders correspond to tables of data in each layout respectively. For the layout on the left, sorting could lead to rows from one table ending up in the other. For the layout on the right, sorting would lead to a distortion of the table since the column elements cannot be moved as a unit.}
-\end{figure*}
-</div>
-
-*Generalization Limitation 1* shows a case where the data is displayed in a grouped structure. Without the constraint that row elements have to be direct siblings, the row generalization algorithm could determine the row selector to be *.avenger* (elements with blue border) because it matches the largest number of parallel structures (has the largest $el_{siblings}$). While this may be the correct result for the task of extraction, it is not necessarily suitable for the task of customization. When the user sorts and filters, this could result in rows moving between the two tables, disrupting the nested layout and producing a confusing result. Because of this, our system currently does not support such layouts. In the future, we may explore the possibility of extracting multiple tables from a website and joining them together.
-
-*Generalization Limitation 2*, also in @fig:limitations, shows a case where the website contains one table of data in which rows are made up of alternating `H1` and `SPAN` tags (elements within blue border). This poses a challenge because each row does not correspond directly to a single DOM element; instead, each row consists of multiple consecutive DOM elements without any grouped structure. Moving the rows when customizing the website would require treating multiple consecutive elements as a single row. This is supported in the underlying Wildcard system, but not yet by our demonstration-based approach.
-
-### CSS Selector Synthesis Algorithm
-
-Our CSS selector synthesis algorithm guarantee the synthesis of a valid class-based selector if it is present because of its exhaustive nature. However, it does not guarantee that the synthesized selector is robust. Take column elements corresponding to a column of movie titles whose `class` attribute has a  value of “column-1  movie-title”. Our algorithm would synthesize “column-1” as the column selector because it would be the first class in the generated class combination list and it selects all the column elements. An inexperienced programmer writing code to scrape the column elements could also use “column-1” for similar reasons. However, an experienced programmer would likely know to use “movie-title” because it describes the meaning of the element as opposed to its ordering which could change. In general, generating robust selectors is a non trivial task [@furche2016] which is made even harder by the ambiguous nature of demonstrations as specifications for program synthesis [@peleg2018].
-
-Another shortcoming of our CSS synthesis algorithm is their reliance on the `class` attribute. CSS selectors can comprise various combinations of an element’s full set of attributes. For example, a desired set of link elements could not have a `class` attribute but could be selected based on the value of their `href` attribute using a selector like `a[href*=”/id”]`. This would select a link element whose `href` attribute ends with “/id” for example. Again, this is a non trivial task. Rousillon [@chasins2018], an end-user web scraping system that also utilizes programming-by-demonstration, uses Ringer [@barman2016] to select elements by saving all of their attributes during scraping and comparing them to candidate elements during selection. While this is more robust because it considers all of an element's attributes, this does not fit our approach of representing selectors as formulas that can be viewed and modified by programmers.
-
-To handle the cases in which elements do not have a `class` attribute, our algorithm generate index-based selectors using the `nth-child` notation. This accurately select the given element but is not robust as the addition or removal of an element in the DOM could invalidate the selector.
-
 # Design Principles {#sec:design-principles}
+
+Below, we describe three design princples that Joker embodies. We did not invent these principles but rather combined them in a novel manner for the domain of web scraping and web customization.
 
 ## Unified User Model
 
-Prior to this work, web scraping and customization in Wildcard [@litt2020; @litt2020b] were divided: web scraping was done by programmers in an Integrated Development Environment (IDE) while customizing (via direct manipulation and formulas) was done in the browser. This type of divide between tasks can be seen in other domains:
+Prior to this work, web scraping and web customization in most customization systems [] were divided: web scraping had to be performed prior to customization in a separate phase. Informal user tests of Wildcard revealed that this discontinuity between the two phases was a source of confusion. Vegemite [@lin2009], a system for end-user programming of mashups, reported similar findings from its user study in which participants thought that “it was confusing to use one technique to create the initial table, and another technique to add information to a new column”.
 
-- In data science, workflows revolve between cleaning and using data which often happen in different environments (e.g. data wrangling tools and live notebooks). Wrex [@drosos2020], an end-user programming-by-example system for data wrangling, reported that “although data scientists were aware of and appreciated the productivity benefits of existing data wrangling tools, having to leave their native notebook environment to perform wrangling limited the usefulness of these tools.” This was a major reason Wrex was developed as an add-on to Jupyter notebooks, the environment in which data scientists use their data.
-- In web scraping, users have to switch from the environment in which they are using the scraped data (database, spreadsheet etc) to the environment in which the data is scraped if they need more of it or need to fix omissions. This can be seen in tools like Rousillon [@chasins2018], FlashExtract [@le2014] and import.io [@import.io].
+By representing the output of demonstrations as formulas, our new web scraping model fit right into Wildcard's customization paradigm which utilizes formulas for web customization. This enabled us to go beyond providing a model that combined web scraping by demonstration with web scraping by programming to providing a model that combined web scraping *and* customization. Both web scraping and customization are performed in the same, single phase, with users being able to seamlessly interleave the two as desired. 
 
-Based on this, we have provided support for end-user web scraping in Wildcard in a uniform environment via the table used for customization. This relates to the idea of “in-place toolchains” [@zotero-165] for end-user programming systems: users should be able to program using familiar tools (spreadsheet table) in the context where they already use their software (browsers).
-
-In spite of this, web scraping and customization are still divided: web scraping has to be performed prior to customization in a separate phase. Early user tests revealed that this discontinuity between the two phases was a source of confusion. Vegemite [@lin2009], a system for end-user programming of mashups, reported similar findings from its user study in which participants thought that “it was confusing to use one technique to create the initial table, and another technique to add information to a new column”.
-
-Armed with this, we go beyond providing a uniform environment for web scraping and customization to providing a *unified user model* for web scraping and customization. Both web scraping and customization are performed in the same, single phase, with users being able to seamlessly interleave the two as desired. We can see this in the Ebay example in [@sec:examples]: the user starts out by demonstrating to scrape values on the website into a column in the table, proceeds to populate the next column with the results of a formula, sorts the table to view the resulting customization and then continues on to the next task.
+We can see this in the Ebay example in [@sec:examples]: the user starts out by demonstrating to scrape values on the website into a column in the table, proceeds to populate the next column with the results of a formula, sorts the table to view the resulting customization and then continues on to the next task.
 
 ## Functional Reactive Programming
 
-In general terms, functional reactive programming (FRP) is the combination of functional and reactive programming: it is functional in that it uses functions to define programs that manipulate data and reactive in that it defines data flows through which changes in data are propagated.
+In general terms, functional reactive programming (FRP) is the combination of functional and reactive programming: it is functional in that it uses functions to define programs that manipulate data and reactive in that it defines data flows through which changes in data are propagated. FRP has seen wide adoption in end-user programming through implementations such as spreadsheet formula languages (Microsoft Excel & Google Sheets) and formula languages for low-code programming environments (Microsoft Power Fx [@zotero-150], Google AppSheet [@zotero-218], Airtable [@zotero-228], Glide [@zotero-148], Coda [@zotero-155] & Gneiss [@chang2014]).
 
-FRP has seen wide adoption in end-user programming through implementations such as spreadsheet formula languages (Microsoft Excel & Google Sheets) and formula languages for low-code programming environments (Microsoft Power Fx [@zotero-150], Google AppSheet [@zotero-218], Airtable [@zotero-228], Glide [@zotero-148], Coda [@zotero-155] & Gneiss [@chang2014]).
+Wildcard [@litt2020; @litt2020b] already provides functional reactive programming via a spreadsheet formula language aimed at increasing the expressiveness of customizations. The language provides formulas to encapsulate logic, perform operations on strings, call browser APIs and even invoke web APIs. As per the FRP paradigm, users only have to think in terms of operations on the data in the table without having to worry about traditional programming concepts such as variables, state and data flow. This makes it easier for them to program customizations in a declarative manner without having to worry about all the steps that have to take place to make this possible.
 
-Because of this, Wildcard [@litt2020; @litt2020b] already provides functional reactive programming via a spreadsheet formula language aimed at increasing the expressiveness of customizations. The language provides formulas to encapsulate logic, perform operations on strings, call browser APIs and even invoke web APIs. As per the FRP paradigm, users only have to think in terms of operations on the data in the table without having to worry about traditional programming concepts such as variables, state and data flow. This makes it easier for them to program customizations in a declarative manner without having to worry about all the steps that have to take place to make this possible.
-
-Our unified model for web scraping and customizations extends this formula language to mitigate the limitations of programming-by-demonstration to specify complex web scraping tasks. Demonstrations are represented as formulas containing the corresponding, synthesized web scraping code as a CSS selector. As with other formulas in the language, the synthesized web scraping formulas can be modified (or authored from scratch) and run to achieve more expressive web scraping. We can see this in the Ebay example in [@sec:examples] when the user manually authors a formula to scrape the value of the column of ratings. Because of FRP, all the user has to do is provide is a CSS selector that will select the desired elements: the row iteration and extraction of values from the elements is done automatically for them.
+Our unified model for web scraping and customizations adds formulas to this formula language to mitigate the lack of expressiveness of programming-by-demonstration. Demonstrations are represented as formulas containing the corresponding, synthesized web scraping code as a CSS selector. As with other formulas in the language, the synthesized web scraping formulas can be modified (or authored from scratch) and run to achieve more expressive web scraping. We can see this in the Ebay example in [@sec:examples] when the user manually authors a formula to scrape the value of the column of ratings. Because of FRP, all the user has to do is provide is a CSS selector that will select the desired elements: the row iteration and extraction of values from the elements is done automatically for them.
 
 ## Mixed-Initiative Interaction
 
 In a position paper [@chugh2016a], Chugh discusses how programmatic and direct manipulation systems each have distinct strengths but users are often forced to choose one over another. As a solution, he makes a proposal for “novel software systems that tightly couple programmatic and direct manipulation” which led to the emergence of systems like Sketch-N-Sketch [@chugh2016]. More generally, this idea relates to work on mixed-initiative interaction by Horvitz [@horvitz1999] in which he advocates for “designs that take advantage of the power of direct manipulation and potentially valuable automated reasoning.” In our system, mixed-initiative interaction refers to the fluid interleaving of demonstrations and programming.
 
-Mixed-initiative interactions can be seen in the following programming-by-example systems:
+Mixed-initiative interactions can be seen in a number of programming-by-example systems. Sketch-N-Sketch [@chugh2016] allows users can to start out by creating an SVG shape via programming and then switch to modifying its size or shape
+via direct manipulation. Wrex [@drosos2020] takes examples of data transforms and generates readable and editable Python code. Small-Step Live Programming By Example [@ferdowsifard2020] presents a paradigm in which programming-by-example is used to synthesize small parts of a user authored program instead of delegating construction of entire program. Mayer et al [@mayer2015] developed a user interaction model called *Program Navigation* which allows users to navigate between all synthesized programs instead of only displaying the top-ranked one.
 
-- Sketch-N-Sketch [@chugh2016] integrates direct manipulation and programming for the creation of Scalable Vector Graphics (SVG). Users can start out by creating a shape via programming and then switch to modifying its size or shape via direct manipulation which updates the underlying program to reflect the changes. Their central theme is that users do not have to choose between direct manipulation and programmatic systems
-- Wrex [@drosos2020] takes examples of data transforms and generates readable and editable Python code. This was motivated by their formative study in which participants emphasized the need for programming-by-example systems to “produce code as an inspectable and modifiable artifact”
-- Small-Step Live Programming By Example [@ferdowsifard2020] presents a paradigm in which programming-by-example is used to synthesize small parts of a user authored program instead of delegating construction of entire program
-- Mayer et al [@mayer2015] report that “a key impedance in adoption of PBE systems is the lack of user confidence in the correctness of the program that was synthesized by the system.” To this end, they developed a user interaction model called *Program Navigation* which allows users to navigate between all synthesized programs instead of only displaying the top-ranked one
-
-Our unified model for web scraping and customization offers mixed-initiative interaction by presenting the result of web scraping by demonstration as a formula. This is advantageous as it not only allows users to delegate automation (via synthesis of web scraping programs) to the system via demonstrations but also keeps the interaction loop open by allowing users to view and modify the output of the demonstration. In the Ebay example in [@sec:examples], the user starts out by demonstrating to scrape, switches to manually authoring a web scraping formula when demonstrating is insufficient and then switches back to demonstrating, all in a seamless and fluid manner.
+Our unified model for web scraping and customization offers mixed-initiative interaction by presenting the result of web scraping by demonstration as a formula. This is advantageous as it not only allows users to delegate automation to the system via demonstrations but also allows users to modify the output of the demonstration. In the Ebay example in [@sec:examples], the user starts out by demonstrating to scrape, switches to manually authoring a web scraping formula when demonstrating is insufficient and then switches back to demonstrating, all in a seamless and fluid manner.
 
 # Evaluation {#sec:evaluation}
 
@@ -241,7 +198,7 @@ We have also borrowed a technique from spreadsheets for avoiding premature commi
 
 # Related Work {#sec:related-work}
 
-Our unified model for web scraping and customization relates to existing work in end-user web scraping, end-user web customization and program synthesis by a number of systems and tools.
+Our unified model for web scraping and customization relates to existing work in end-user web scraping, end-user web customization and program synthesis by a number of systems.
 
 ## End-user Web Scraping
 
@@ -253,12 +210,11 @@ Rousillon [@chasins2018] is a tool that enables end-users to scrape distributed,
 
 Vegemite [@lin2009] is a tool for end-user programming of mashups that harnesses web scraping for web automation. Unlike our model, its table interface is only populated and can only be interacted with after all the demonstrations have been provided which does not support interleaving of scraping and table operations to achieve an incremental workflow for users. Its web automation utilizes CoScripter [@leshed2008] which is used to record operations on the scraped values in the table for automation tasks. CoScripter provides the generated automation program as text-based commands, such as “paste address into ‘Walk Score’ input”, which can be edited via “sloppy programming” [@lin2009] techniques. However, this editing does not extend to the synthesized web scraping program which is not displayed and therefore cannot be modified.
 
-Sifter [@huynh2006] is a tool that augments websites with advanced sorting and filtering functionality. Similar to Wildcard, it uses web scraping to extract data from websites in order to enable customizations. However, Wildcard supports a broader range of customizations beyond sorting and filtering, including adding annotations to websites and running computations with a spreadsheet formula language. Sifter attempts to automatically detect items and fields on the page with a variety of clever heuristics, including automatically detecting link tags and considering the size of elements on the page. If this falls, it gives the user the option of demonstrating to correct the result if the heuristics. In contrast, our model is simpler and makes fewer assumptions about the structure of websites by giving control to the user from the beginning of the process and display the synthesized program which can be modified. We hypothesize that focusing on a tight feedback loop rather than automation may support a scraping process that is just as fast as an automated one, offers more expressive scraping and extends to a greater variety of websites. However, further user testing is required to actually validate this hypothesis.
+Sifter [@huynh2006] is a tool that augments websites with advanced sorting and filtering functionality. It attempts to automatically detect items and fields on the page with a variety of clever heuristics, including automatically detecting link tags and considering the size of elements on the page. If this falls, it gives the user the option of demonstrating to correct the result if the heuristics. In contrast, our model is simpler and makes fewer assumptions about the structure of websites by giving control to the user from the beginning of the process and displaying the synthesized program which can be modified. We hypothesize that focusing on a tight feedback loop rather than automation may support a scraping process that is just as fast as an automated one, offers more expressive scraping and extends to a greater variety of websites. However, further user testing is required to actually validate this hypothesis.
 
 ## Program Synthesis
 
-FlashProg [@mayer2015] is a framework that provides program navigation and disambiguation for programming-by-example tools like FlashExtract [@le2014]. The program viewer provides a high level description of synthesized programs as well as a way to navigate the list of alternative programs that satisfy the demonstrations. This is important because demonstrations are an ambiguous specification for program synthesis [@peleg2018] and therefore the set of synthesized programs can be large. To further ensure that the best synthesized program is arrived at, FlashProg has a disambiguation viewer that asks the user questions in order to resolve ambiguities in the user's demonstrations. In contrast, our model only presents the top-ranked synthesized program which may not be the best one. Furthermore, the program is presented in is low-level form as a formula which may not be end-user friendly but allows for more expressiveness because it can be directly modified by programmers.
-
+FlashProg [@mayer2015] is a framework that provides program navigation and disambiguation for programming-by-example tools like FlashExtract [@le2014]. The program viewer provides a high level description of synthesized programs as well as a way to navigate the list of alternative programs that satisfy the demonstrations. This is important because demonstrations are an ambiguous specification for program synthesis [@peleg2018] and therefore the set of synthesized programs can be large. To further ensure that the best synthesized program is arrived at, FlashProg has a disambiguation viewer that asks the user questions in order to resolve ambiguities in the user's demonstrations. In contrast, our model only presents the top-ranked synthesized program which may not be the best one. Furthermore, the program is presented in is low-level form as a CSS selector which is not end-user friendly but allows for more expressiveness.
 
 # Conclusion And Future Work {#sec:conclusion}
 
