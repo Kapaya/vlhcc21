@@ -35,7 +35,7 @@ Our contributions are as follows:
 
 - A unified model for web scraping and customization that combines web scraping (by demonstration and programing) with web customization through a shared spreadsheet formula language
 - An implementation of the unified model for web scraping and customization that combines key design principles in a novel way ([@sec:design-principles])
-- An evaluation of the model via a formative user study that provides qualitive results of using of it, an example gallery of websites that the model works on and doesn't work on and a cognitive dimensions of notation analysis of the model ([@sec:evaluation])
+- An evaluation of the model via a formative user study that provides qualitative results of using of it, an example gallery of websites that the model works on and doesn't work on and a cognitive dimensions of notation analysis of the model ([@sec:evaluation])
 
 We end by discussing opportunities for future work ([@sec:conclusion]).
 
@@ -144,7 +144,7 @@ The algorithm stops traversing upwards once it reaches the `BODY` element. It ch
 
 # Design Principles {#sec:design-principles}
 
-Below, we describe three design princples that the implementation of our model embodies. We did not invent these principles but rather combined them in a novel manner for the domain of web scraping and web customization.
+Below, we describe three design principles that the implementation of our model embodies. We did not invent these principles but rather combined them in a novel manner for the domain of web scraping and web customization.
 
 ## Mixed-Initiative Interaction
 
@@ -178,7 +178,7 @@ Following a method used to evaluate visualizations through a diverse gallery of 
 
 ### Websites Joker Can Be Used On
 
-Joker's unified model of demonstrations and formulas is most effective on webpages with data that is presented as many similarly-structured HTML elements. For example, we have used Joker to modify a broad range of product listing webpages such as those of Amazon, Target, and eBay. We have used Joker's support of scraping by demonstration and formulas to scrape prices, ratings, and spnosored tags; then we use formulas to refine the scraped data and filter the results, e.g. for low prices and high ratings. 
+Joker's unified model of demonstrations and formulas is most effective on webpages with data that is presented as many similarly-structured HTML elements. For example, we have used Joker to modify a broad range of product listing webpages such as those of Amazon, Target, and eBay. We have used Joker's support of scraping by demonstration and formulas to scrape prices, ratings, and sponsored tags; then we use formulas to refine the scraped data and filter the results, e.g. for low prices and high ratings. 
 
 We have also used Joker to customize directory-like websites such as Google search results, the MIT course catalog, and the MIT CSAIL people directory. In these cases, Joker's scraping and string manipulation formulas can be used to filter the directories based on the contents of the entries; for example, on the MIT course catalog, Joker can filter for courses with no prerequisites by scraping the "prerequisite" text, then applying a formula that determines if the text contains the word "None".
 
@@ -200,11 +200,11 @@ We recruited 5 participants with backgrounds ranging from limited programming ex
 
 ### Tasks
 
-The participants completed 7 tasks across 2 websites towards the goal of web customization. The first website was MIT's course catalog and the second was a listing of iphones after searching for "iphone" on eBay. The tasks were as follows:
+The participants completed 7 tasks across 2 websites towards the goal of web customization. The first website was MIT's course catalog and the second was a listing of iPhones after searching for "iphone" on eBay. The tasks were as follows:
 
-*MIT Course Catalog.* Thise set of tasks (A) involved web scraping by demonstration and the use of web customization formulas: 1) Scrape course titles, 2) Scrapes course prerequites, 3) Add a column that indicates whether a course has a prerequiste & 4) Add a column that indicates whether a course does not have a prerequiste and is offered in the fall.
+*MIT Course Catalog.* This set of tasks (A) involved web scraping by demonstration and the use of web customization formulas: 1) Scrape course titles, 2) Scrapes course prerequisites, 3) Add a column that indicates whether a course has a prerequisite & 4) Add a column that indicates whether a course does not have a prerequisite and is offered in the fall.
 
-*eBay.* This set of tasks (B) involved web scraping by demonstration, the use of web scraping formulas and the use of web customization formulas: 1) Scrape iphone listing title, 2) Scrape iphone listing price, & 3) Create a column that indicates whether an iphone listing is sponsored.
+*eBay.* This set of tasks (B) involved web scraping by demonstration, the use of web scraping formulas and the use of web customization formulas: 1) Scrape iPhone listing title, 2) Scrape iPhone listing price, & 3) Create a column that indicates whether an iPhone listing is sponsored.
 
 ### Protocol
 
@@ -216,15 +216,15 @@ All participants were able to complete all the tasks with the help of hints when
 
 *Web Scraping By Demonstration.* All participants where able to complete the tasks that only involved scraping by demonstration (A1, A2 & B1) quickly and without any hints. For tasks that involved switching between demonstrations and writing formulas, there was some confusion about what the active column, i.e. column the values would be scraped into, was. The active column is indicated and controlled by a toolbar away from the table at the top of the website but participants hardly noticed it and assumed all operations had to be performed on the table. This suggests that if a table is the basis of scraping and customization, all user interactions need to be with it.
 
-*Web Customization Formulas.* Participants had varying degrees of trouble when completing the tasks that involved using web customization formulas (A3, A4, B3). Most of the confusion resulted from formula parameters and return values. The formula bar has an autocomplete feature that shows the documentation for a given formula. The documentation consists of the paremeters a formula it takes and a brief description of each parameter. However, this wasn't always sufficient to enable participants to use formulas correctly. This suggests that concrete examples of formula parameters and results could be more effective for describing usage. 
+*Web Customization Formulas.* Participants had varying degrees of trouble when completing the tasks that involved using web customization formulas (A3, A4, B3). Most of the confusion resulted from formula parameters and return values. The formula bar has an autocomplete feature that shows the documentation for a given formula. The documentation consists of the parameters a formula it takes and a brief description of each parameter. However, this wasn't always sufficient to enable participants to use formulas correctly. This suggests that concrete examples of formula parameters and results could be more effective for describing usage. 
 
-*Web Scraping Formulas.* Participants were unsure why demonstrations did not work when completing tasks that required using web scraping formulas (B2, B3). As a result, they wasted time attempting to demonstrate using various means. The participant with no web development experience had the hardest time as expected but was able to utlize a series of hints we provided to accomplish B2. The rest of the participants were able to accomplish B2 with minimal hints but required a lot more when completing B3. B3 involved scraping a value that was layed out in an adverserial manner in the DOM to prevent web scraping.
+*Web Scraping Formulas.* Participants were unsure why demonstrations did not work when completing tasks that required using web scraping formulas (B2, B3). As a result, they wasted time attempting to demonstrate using various means. The participant with no web development experience had the hardest time as expected but was able to utilize a series of hints we provided to accomplish B2. The rest of the participants were able to accomplish B2 with minimal hints but required a lot more when completing B3. B3 involved scraping a value that was laid out in an adversarial manner in the DOM to prevent web scraping.
 
 ### Discussion
 
-Overall, participants found the experience of using Joker to accomplish the tasks preferrable to the alternatives available to them. For the MIT course catalog tasks, the participant with no web development experience said that they couldn't think of how they could accomplish the tasks without Joker. 3 of the four participants with web development experience said that they preferred Joker to writing a program to accomplish the tasks because it would either take too long or be cumbersome to validate the results outside the context of the website. The 4th participant, who had the most web scraping experience, had the opposite preferrence because they would have more control over the scraping process if they wrote their own program.
+Overall, participants found the experience of using Joker to accomplish the tasks preferable to the alternatives available to them. For the MIT course catalog tasks, the participant with no web development experience said that they couldn't think of how they could accomplish the tasks without Joker. 3 of the four participants with web development experience said that they preferred Joker to writing a program to accomplish the tasks because it would either take too long or be cumbersome to validate the results outside the context of the website. The 4th participant, who had the most web scraping experience, had the opposite preference because they would have more control over the scraping process if they wrote their own program.
 
-We categorized the main usability issues and insights we obtained into three groups. The first is about the confusion concerning which column was the active column. This suggests that if a table is the basis of web scraping and customization, all user interactions need to be with the table and not split across various interfaces. The thrid is about the confusion concerning what parameters needed to be passed to formulas and what values would be returned. This suggests that users need more than documentation showing formula parameters and descriptions of the parameters. The third is about the confusion concerning why demonstrations were not sufficient to scrape certain values. This suggests that a prerequiste of increasing the expressiveness of web scraping beyond that available by demonstrating needs to communicate why demonstrations are not sufficient.
+We categorized the main usability issues and insights we obtained into three groups. The first is about the confusion concerning which column was the active column. This suggests that if a table is the basis of web scraping and customization, all user interactions need to be with the table and not split across various interfaces. The thrid is about the confusion concerning what parameters needed to be passed to formulas and what values would be returned. This suggests that users need more than documentation showing formula parameters and descriptions of the parameters. The third is about the confusion concerning why demonstrations were not sufficient to scrape certain values. This suggests that a prerequisite of increasing the expressiveness of web scraping beyond that available by demonstrating needs to communicate why demonstrations are not sufficient.
 
 ## Cognitive Dimensions Analysis
 
@@ -267,9 +267,6 @@ Sifter [@huynh2006] is a tool that augments websites with advanced sorting and f
 FlashProg [@mayer2015] is a framework that provides program navigation and disambiguation for programming-by-example tools like FlashExtract [@le2014] and FlashFill [@harris]. The program viewer provides a high level description of synthesized programs as well as a way to navigate the list of alternative programs that satisfy the demonstrations. This is important because demonstrations are an ambiguous specification for program synthesis [@peleg2018]: the set of synthesized programs for a demonstration can be very large. To further ensure that the best synthesized program is arrived at, FlashProg has a disambiguation viewer that asks the user questions in order to resolve ambiguities in the user's demonstrations. In contrast, our model only presents the top-ranked synthesized program which may not be the best one. Furthermore, the program is presented in is low-level form as a CSS selector. This is not end-user friendly but allows for more expressiveness.
 
 # Conclusion And Future Work {#sec:conclusion}
-
-
-
 
 
 
