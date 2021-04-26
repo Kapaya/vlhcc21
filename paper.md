@@ -178,7 +178,17 @@ Following a method used to evaluate visualizations through a diverse gallery of 
 
 ### Websites Joker Can Be Used On
 
+Joker's unified model of demonstrations and formulas is most effective on webpages with data that is presented as many similarly-structured HTML elements. For example, we have used Joker to modify a broad range of product listing webpages such as those of Amazon, Target, and eBay. We have used Joker's support of scraping by demonstration and formulas to scrape prices, ratings, and spnosored tags; then we use formulas to refine the scraped data and filter the results, e.g. for low prices and high ratings. 
+
+We have also used Joker to customize directory-like websites such as Google search results, the MIT course catalog, and the MIT CSAIL people directory. In these cases, Joker's scraping and string manipulation formulas can be used to filter the directories based on the contents of the entries; for example, on the MIT course catalog, Joker can filter for courses with no prerequisites by scraping the "prerequisite" text, then applying a formula that determines if the text contains the word "None".
+
+Another category of websites that is suited for modification by Joker is news websites such as ABC news, old Reddit and HackerNews. For news listings, we have used Joker to scrape the listed links, then we use formulas that call APIs to display the links' read times and whether they have been visited in the browser history. We can also scrape elements like number of comments and the time of posting and sort by these values.
+
+
 ### Websites Joker Cannot Be Used On
+
+Joker does not currently work well on some popular social media websites like Facebook, Twitter, new Reddit, and Pinterest. Although these websites have repeated data entries, these sites have complex or inconsistent HTML structures, which inhibits Joker's Wrapper Induction algorithm from determining the correct row selectors. Many of these sites also have an "infinite scroll" feature that adds new entries to the page, which disrupts Joker's bidirectional data synchronization. On some sites, like Pinterest, most of the data (e.g. time of posting) does not appear unless a user clicks on the entry, but Joker is restricted to scraping what is visible on the page at one point in time.
+
 
 ## User Study
 
