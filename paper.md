@@ -15,7 +15,7 @@ abstract: |
 
  In this paper, we present a new interaction model for web scraping that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. When a user demonstrates examples of data to extract, a web scraping program is synthesized and presented as a spreadsheet formula. Crucially, the user can also directly edit the formula, allowing them to specify scraping operations which can not be achieved via demonstration alone.
 
- To illustrate our model, we implement it as a browser extension called Joker. Through concrete examples and a qualitative user study, we show how Joker enables users to scrape and customize websites more flexibly than in prior systems.
+ To illustrate our model, we implement it as a browser extension called Joker. Through concrete examples and a formative user study with five participants, we show how Joker enables users to scrape and customize websites more flexibly than in prior systems.
 
 ---
 
@@ -35,7 +35,7 @@ Our contributions are as follows:
 
 - A unified model for web scraping and customization that combines web scraping (by demonstration and programing) with web customization through a shared spreadsheet formula language
 - An implementation of the unified model for web scraping and customization that combines key design principles in a novel way ([@sec:design-principles])
-- An evaluation of the model via a user study that provides some qualitive results of using of it, an example gallery of websites that the model works on and doesn't work on and a cognitive dimensions of notation analysis of the model ([@sec:evaluation])
+- An evaluation of the model via a formative user study that provides qualitive results of using of it, an example gallery of websites that the model works on and doesn't work on and a cognitive dimensions of notation analysis of the model ([@sec:evaluation])
 
 We end by discussing opportunities for future work ([@sec:conclusion]).
 
@@ -174,13 +174,51 @@ We can see this in the Ebay example in [@sec:examples]: the user starts out by d
 
 ## Example Gallery
 
+Following a method used to evaluate visualizations through a diverse gallery of examples [@ren2018], our first evaluation of Joker provides a gallery of popular websites on which Joker can be used for web customization and on which it can not be used. For the websites on which Joker can be used, we provide the sequence of interactions needed to achieve the customizations. For the websites on which Joker cannot be used, we provide an explanation.
+
+### Websites Joker Can Be Used On
+
+### Websites Joker Cannot Be Used On
+
 ## User Study
+
+Our second evaluation of Joker reports the qualitative results of a formative user study. The focus of the study was on usability rather than learnability as we are aware that there are many areas of improvement for that in the current implementation.
+
+### Participants
+
+We recruited 5 participants with backgrounds ranging from limited programming experience to Software Engineers. All participants where familiar with Microsfot Excel spreadsheets but not all had used Excel spreadsheet formulas. 4 of the participants had web development experience with 3 of them having extensive experience. 3 of the participants had web scraping scraping with only 1 having extensive experience.
+
+### Tasks
+
+The participants completed 7 tasks across 2 websites towards the goal of web customization. The first website was MIT's course catalog and the second was a listing of iphones after searching for "iphone" on eBay. The tasks were as follows:
+
+*MIT Course Catalog.* Thise set of tasks (A) involved web scraping by demonstration and the use of web customization formulas: 1) Scrape course titles, 2) Scrapes course prerequites, 3) Add a column that indicates whether a course has a prerequiste & 4) Add a column that indicates whether a course does not have a prerequiste and is offered in the fall.
+
+*eBay.* This set of tasks (B) involved web scraping by demonstration, the use of web scraping formulas and the use of web customization formulas: 1) Scrape iphone listing title, 2) Scrape iphone listing price, & 3) Create a column that indicates whether an iphone listing is sponsored.
+
+### Protocol
+
+All participants completed the MIT course catalog and eBay tasks in the order we have described. We started each session with a description of Joker and provided a brief tutorial of its main features (web scraping by demonstration, web scraping formulas & web customization formulas) on a website not used for the tasks. Sessions where held over video conferencing with the given participant sharing their screen and talking out loud as they worked on the tasks. There was no time limit for tasks but we provided hints whenever a participant had exhausted the knowledge available to them.
+
+### Results
+
+All participants were able to complete all the tasks with the help of hints when they got stuck and were unable to make progress on their own. We describe the results along the following dimensions:
+
+*Web Scraping By Demonstration.* All participants where able to complete the tasks that only involved scraping by demonstration (A1, A2 & B1) quickly and without any hints. For tasks that involved switching between demonstrations and writing formulas, there was some confusion about what the active column, i.e. column the values would be scraped into, was. The active column is indicated and controlled by a toolbar away from the table at the top of the website but participants hardly noticed it and assumed all operations had to be performed on the table. This suggests that if a table is the basis of scraping and customization, all user interactions need to be with it.
+
+*Web Customization Formulas.* Participants had varying degrees of trouble when completing the tasks that involved using web customization formulas (A3, A4, B3). Most of the confusion resulted from formula parameters and return values. The formula bar has an autocomplete feature that shows the documentation for a given formula. The documentation consists of the paremeters a formula it takes and a brief description of each parameter. However, this wasn't always sufficient to enable participants to use formulas correctly. This suggests that concrete examples of formula parameters and results could be more effective for describing usage. 
+
+*Web Scraping Formulas.* Participants were unsure why demonstrations did not work when completing tasks that required using web scraping formulas (B2, B3). As a result, they wasted time attempting to demonstrate using various means. The participant with no web development experience had the hardest time as expected but was able to utlize a series of hints we provided to accomplish B2. The rest of the participants were able to accomplish B2 with minimal hints but required a lot more when completing B3. B3 involved scraping a value that was layed out in an adverserial manner in the DOM to prevent web scraping.
+
+### Discussion
+
+Overall, participants found the experience of using Joker to accomplish the tasks preferrable to the alternatives available to them. For the MIT course catalog tasks, the participant with no web development experience said that they couldn't think of how they could accomplish the tasks without Joker. 3 of the four participants with web development experience said that they preferred Joker to writing a program to accomplish the tasks because it would either take too long or be cumbersome to validate the results outside the context of the website. The 4th participant, who had the most web scraping experience, had the opposite preferrence because they would have more control over the scraping process if they wrote their own program.
+
+We categorized the main usability issues and insights we obtained into three groups. The first is about the confusion concerning which column was the active column. This suggests that if a table is the basis of web scraping and customization, all user interactions need to be with the table and not split across various interfaces. The thrid is about the confusion concerning what parameters needed to be passed to formulas and what values would be returned. This suggests that users need more than documentation showing formula parameters and descriptions of the parameters. The third is about the confusion concerning why demonstrations were not sufficient to scrape certain values. This suggests that a prerequiste of increasing the expressiveness of web scraping beyond that available by demonstrating needs to communicate why demonstrations are not sufficient.
 
 ## Cognitive Dimensions Analysis
 
-*GL note: I keep saying "our system" or "our tool" below, is there a better way to refer to it? Should we name it the Wildcard Scraper UI or something?*
-
-In this section, we evaluate our system using the Cognitive Dimensions of Notation [@blackwell2001], a heuristic evaluation framework that has been used to evaluate programming languages and visual programming systems (cite). When contrasting our tool with traditional scraping and other visual tools, we find particularly meaningful differences along several of the dimensions:
+Our third evaluation of Joker analyzes it using Cognitive Dimensions of Notation [@blackwell2001], a heuristic evaluation framework that has been used to evaluate programming languages and visual programming systems (cite). When contrasting our tool with traditional scraping and other visual tools, we find particularly meaningful differences along several of the dimensions:
 
 *Progressive evaluation.* In our tool, a user can see the intermediate results of their scraping and customization work at any point, and adjust their future actions accordingly. The table UI makes it easy to inspect the intermediate results and notice surprises like missing values.
 
@@ -200,13 +238,13 @@ We have also borrowed a technique from spreadsheets for avoiding premature commi
 
 # Related Work {#sec:related-work}
 
-Our unified model for web scraping and customization relates to existing work in end-user web scraping, end-user web customization and program synthesis by a number of systems.
+Our unified model for web scraping and customization builds on existing work in end-user web scraping, end-user web customization and program synthesis by a number of systems.
 
 ## End-user Web Scraping
 
 FlashExtract [@le2014] is a programming-by-example tool for data extraction. In addition to demonstrating whole values, it supports demonstrating substrings of values. Our model only supports this through formulas. This is not as end-user friendly but allows for a wider range of operations such as indicating whether demonstrated values contain a certain value or are greater than or less than a certain value.
 
-Rousillon [@chasins2018] is a tool that enables end-users to scrape distributed, hierarchical web data. It presents the web scraping code generated by demonstration as an editable, high-level, block-based language called Helena [@zotero-179]. While Helena can be used to specify complex web scraping tasks like adding control flow, it does not present the synthesized web scraping program. This means that users can only scrape what can be demonstrated. Our modek on the other hand displays the synthesized program as a formula which can be modified increase the expressiveness of scraping.
+Rousillon [@chasins2018] is a tool that enables end-users to scrape distributed, hierarchical web data. It presents the web scraping code generated by demonstration as an editable, high-level, block-based language called Helena [@zotero-179]. While Helena can be used to specify complex web scraping tasks like adding control flow, it does not present the synthesized web scraping program. This means that users can only scrape what can be demonstrated. Our modek on the other hand displays the synthesized program as a formula which can be modified to increase the expressiveness of scraping.
 
 ## End-user Web Customization
 
