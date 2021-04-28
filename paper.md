@@ -33,8 +33,8 @@ We have implemented this new model of web scraping as an extension of Wildcard [
 
 Our contributions are as follows:
 
-- A unified interaction model for web scraping and customization that combines web scraping (by demonstration and programing) with web customization through a shared formula language with pure functional semantics
-- An implementation of the unified interaction model for web scraping and customization called Joker that combines three key design principles in a novel way ([@sec:design-principles])
+- A **unified interaction model for web scraping and customization** that combines web scraping (by demonstration and programing) with web customization through a shared formula language with pure functional semantics
+- An implementation of the unified interaction model for web scraping and customization called Joker that combines three key design principles (**mixed-initiative interaction**, **functional reactive programming** & **unified user interaction**) in a novel way ([@sec:design-principles])
 - The results of an evaluation of the model via an example gallery, a five person user study and a cognitive dimensions of notion analysis ([@sec:evaluation])
 
 We end by discussing opportunities for future work ([@sec:conclusion]).
