@@ -1,5 +1,5 @@
 ---
-title: "A Unified Model For Web Scraping & Customization"
+title: "A Unified Interaction Model For Web Scraping & Customization"
 author: "Kapaya Katongo, Geoffrey Litt, Kathryn Jin and Daniel Jackson"
 link-citations: true
 csl: templates/acm.csl
@@ -11,11 +11,11 @@ secPrefix:
     - "Section"
     - "Sections"
 abstract: |
- Web scraping, the process of extracting structured data from a website, is a common building block of web customization systems. Prior approaches have allowed users to perform web scraping by directly demonstrating examples, but this typically doesn’t allow for as much expressiveness as traditional programming.
+ Web scraping, the process of extracting structured data from a website, is a common building block of web customization systems. Prior approaches have allowed users to perform web scraping by directly demonstrating examples of the data to scrape. However, demonstrations alone do not allow for as much expressiveness as traditional programming which is vital for complex web scraping tasks.
 
- In this paper, we present a new interaction model for web scraping that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. When a user demonstrates examples of data to extract, a web scraping program is synthesized and presented as a spreadsheet formula. Crucially, the user can also directly edit the formula, allowing them to specify scraping operations which can not be achieved via demonstration alone.
+ In this paper, we present a new interaction model for web scraping that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. When a user demonstrates examples of data to extract, a web scraping program is synthesized and presented as a spreadsheet formula. Crucially, the user can directly edit and execute the formula using pure functional semantics, allowing them to specify scraping operations which can not be achieved via demonstration alone.
 
- To illustrate our model, we implement it as a browser extension called Joker. Through concrete examples and a formative user study with five participants, we show how Joker enables users to scrape and customize websites more flexibly than in prior systems.
+ To illustrate our model, we implement it as a browser extension called Joker. Through concrete examples, a small user study and a cognitive dimenions of notation analysis, we show how Joker offers more expressive web scraping and customization than prior systems.
 
 ---
 
@@ -23,19 +23,19 @@ abstract: |
 
 Many websites on the internet do not meet the exact needs of all of their users. Because of this, millions of people use browser extensions like Greasemonkey [@zotero-224] and Tampermoneky [@zotero-191] to install userscripts, snippets of Javascript code which customize the behavior of websites. To make the creation of web customizations more accessible to end-users without knowledge of programming, researchers have developed systems like Sifter [@huynh2006], Vegemite [@lin2009] and Wildcard [@litt2020; @litt2020b].
 
-A common building block of these web customization systems is web scraping, the extraction of structured data from websites. They achieve web scraping in one of two ways: programming-by-demonstration [@huynh2006; @lin2009] and traditional programming [@litt2020; @litt2020b]. Web scraping by demonstration automates the web scraping process by utilizing program synthesis to synthesize a web scraping program from user demonstrations. This approach is accessible to end-users with no programming experience and enables them to fully participate in the customization lifecycle. However, web scraping by demonstration comes at the cost of expressiveness which is vital for complex web scraping tasks. On the other side, web scraping by programming involves programmers manually writing web scraping code. It is fully expressive but not accessible to end-users who can only customize websites that programmers have written web scraping code for. This friction between designing for both ease of use and expressiveness is a general problem with software interfaces as discussed by Chugh [@chugh2016a].
+A common building block of these web customization systems is web scraping, the extraction of structured data from websites. They achieve web scraping in one of two ways: programming-by-demonstration [@huynh2006; @lin2009] and traditional programming [@litt2020; @litt2020b]. Web scraping by demonstration automates the web scraping process by utilizing program synthesis to synthesize a web scraping program from user demonstrations. This approach is accessible to end-users with no programming experience and enables them to fully participate in the customization lifecycle. However, web scraping by demonstration is not powerful enough to perform complex web scraping tasks. On the other side, web scraping by programming involves programmers manually writing web scraping code. It allows for scraping a wider variety of websites but is not accessible to end-users who can only customize websites that programmers have written web scraping code for.
 
-In this paper, we present a new model for web scraping for customization that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming in the environment of a spreadsheet-like table with a formula language. Users demonstrate to scrape and the system presents the synthesized web scraping program as a Cascading Style Sheet (CSS) selector in the table's formula language ([@sec:implementation]). More importantly, these web scraping formulas can be directly edited to specify complex scraping operations which can not be achieved by demonstrations alone.
+In this paper, we present a new interaction model for web scraping for customization that combines the ease of use of programming-by-demonstration and the expressiveness of traditional programming. At its core lies a simple formula language. The language offers pure functional semantics for expressing and executing data extractions from websites using Cascading Style Sheet (CSS) selectors. When a user demonstrates examples of data to scrape, a web scraping program is synthesized via wrapper induction [@kushmerick2000] and is presented as a formula containing the CSS selector required to scrape the data ([@sec:implementation]). Cruicially, the formula can be directly edited and executed to specify complex scraping operations which can not be achieved by demonstrations alone. This interaction model coupled with live, intermediate results of operations offers a tight feedback loop that supports exploratory and incremental web scrapping.
 
-We have implemented this new model of web scraping as an extension of Wildcard [@litt2020; @litt2020b] which only supports web scraping by programming. Wildcard enables web customization by direct manipulation of a spreadsheet-like table it adds to websites. The table contains the website's underlying structured data and is bidirectionally synchronized with it. This means that changes to the table, including sorting, adding columns and running computations in a spreadsheet formula language, are propagated to the website thereby customizing it.
+We have implemented this new model of web scraping as an extension of Wildcard [@litt2020; @litt2020b] called Joker. Wildcard enables web customization by direct manipulation of a spreadsheet-like table it adds to websites. The table contains the website's underlying structured data and is bidirectionally synchronized with it. User interactions with the table, including sorting, adding columns and running computations in a spreadsheet formula language, are propagated to the website thereby customizing it. The web scraping required to create Wildcard's table can only be achieved via traditional programming in Javascript. This means that end-users can only customize websites that programmers have written web scraping code for. Joker enables end-users to achieve the web scraping tasks required for customization while maintaining some of the expressivness of traditional programming.
 
-By representing the output of demonstrations as formulas, our new web scraping model fit right into Wildcard's customization paradigm which utilizes formulas for web customization. This enabled us to go beyond providing a model that combined web scraping by demonstration with web scraping by programming to providing a model that combined web scraping *and* customization. We refer to this as a *unified model for web scraping and customization*. In [@sec:examples], we show how this enables users to scrape and customize websites more flexibly than in prior systems.
+ By representing demonstrations as formulas, our new web scraping interaction model fit right into Wildcard's customization paradigm which utilizes formulas for web customization. This enabled us to go beyond providing an interaction model that combines web scraping by demonstration with web scraping by programming to providing an interaction model that combines web scraping *and* customization. We refer to this as a *unified interaction model for web scraping and customization*. In [@sec:examples], we show how this offers more expressive web scraping and customization than prior systems.
 
 Our contributions are as follows:
 
-- A unified model for web scraping and customization that combines web scraping (by demonstration and programing) with web customization through a shared spreadsheet formula language
-- An implementation of the unified model for web scraping and customization that combines key design principles in a novel way ([@sec:design-principles])
-- An evaluation of the model via a formative user study that provides qualitative results of using of it, an example gallery of websites that the model works on and doesn't work on and a cognitive dimensions of notation analysis of the model ([@sec:evaluation])
+- A **unified interaction model for web scraping and customization** that combines web scraping (by demonstration and programing) with web customization through a shared formula language with pure functional semantics
+- An implementation of the unified interaction model for web scraping and customization called Joker that combines three key design principles (**mixed-initiative interaction**, **functional reactive programming** & **unified user interaction**) in a novel way ([@sec:design-principles])
+- The results of an evaluation of the model via an example gallery, a five person user study and a cognitive dimensions of notion analysis ([@sec:evaluation])
 
 We end by discussing opportunities for future work ([@sec:conclusion]).
 
@@ -74,77 +74,74 @@ In this way, Jen is able to use our system to customize the eBay website, withou
 
 # System Implementation {#sec:implementation}
 
-We start by describing the formula language used to represent web scraping programs. Then, we discuss the algorithm we use to generate the CSS selectors we present in the web scraping formulas. Finally, we present the *wrapper induction* [@kushmerick2000] algorithm that synthesizes the web scraping programs.
+In this section, we outline the *wrapper induction* [@kushmerick2000] algorithm that Joker uses to synthesize web scraping programs from user demonstrations. Then, we briefly describe the formula language used to represent the sythesized web scraping programs and include a list of the formulas that are currently available and their roles.
 
-## Web Scraping Formulas
+## Wrapper Induction
 
-The formula language used to present web scraping formulas is similar to visual database query systems like SIEUFERD [@bakke2016] and Airtable [@zotero-228]. Formulas automatically apply across an entire column of data and reference other column names instead of values in specific rows. This is more efficient than users having to copy a formula across a column as in traditional spreadsheets like Microsoft Excel and Google Sheets. It of course comes at the cost of not being able to specify an operation for only a subset of columns but this hasn't yet come up in our use cases.
+In order to create web scraping programs from users demonstrations, Joker solves the wrapper induction [@kushmerick2000] task: generalizing from a few examples of data in a data set to a specification that specifies the all the data in the data set.
 
-Web scraping formulas for rows have the following form:
+Joker takes an approach similar to that used in systems like Vegemite [@lin2009] and Sifter [@huynh2006]. It synthesizes a single *row selector* for the website: a CSS selector that identifies a set of DOM elements corresponding to the rows of the data set. For each column in the data set, it synthesizes a *column selector*, a CSS selector that identifies the element containing the column value.
 
-`=QuerySelector(<selector>)`
+One important difference is that our algorithm only accepts row elements that have direct siblings with a similar structure. We refer to this as the *row-sibling* constraint. Later, we describe how this constraint provides a useful simplification of the wrapper induction task and in [@section:evaluation] discuss the resulting limitations this puts on our system. We proceed to describe how CSS selectors are synthesized for row and column elements and then explain the criteria used to determine row elements.
 
-The parameter `<selector>` refers to a CSS selector. Our CSS selector synthesis algorithm generates class-based selectors, falling back to index-based selectors (which utilize the `nth-child` notation) if the given elements do not have a `class` attribute. The name of the formula matches the `querySelector` method available on Document Object Model (DOM) elements and should thus be familiar to programmers that write web scraping code in Javascript. The web scraping formula for rows is used in a hidden column of the table named `rowElement` for which each column cell corresponds to the row element representing the table row.
+### Synthesizing CSS Selectors
 
-Web scraping formulas for columns have the following form:
+Joker synthesizes two types of CSS selectors: a single row selector that selects a set of DOM elements corresponding to the rows of the data set and a column selector for each column which selects the element containing the column value within a given row.
 
-`=QuerySelector(rowElement, <selector>)`
+For a given row element, its row selector is synthesized using the following criteria:
 
-The parameter `rowElement` is a reference to the hidden column containing row elements and `<selector>` is a CSS selector as previously described. This form is consistent with Wildcard's existing customization formulas which reference column names to perform operations on each of the cells in the column.
+*Plausibility*. A selector is a plausible row selector if it 1) consists of a subset of the classes on the row element and 2) consists of a subset of the classes all the row element's siblings. The second point is the *row-sibling* constraint we mentioned. Notice how it simplifies the problem by eliminating selectors.
 
-Representing web scraping code as web scraping formulas in the table allows programmers to not only view them to understand the outcome of the wrapper induction algorithm but also to modify them. Modifying a web scraping formula is as simply as editing the synthesized selector and executing the formula. Furthermore, programmers can manually author web scraping formulas in empty columns in a simpler fashion than the equivalent Javascript: all they have to do is determine the selector of the desired data and the system will take care of iterating through rows and extracting values from the selected elements.
+*Weight*. A selector has a weight equal to the number of classes it consists of.
 
-## CSS Selector Synthesis Algorithm
+*Best*. A selector is the best if it is plausible and there is no other selector that has a lower weight than it has. We favor selectors with the lowest weight to ensure that only the mininum required classes are utlized. If there are multiple selectors that are plausible and have the lowest weight, we only pick one.
 
-Our system synthesizes two types of CSS selectors: a single row selector that selects a set of DOM elements corresponding to individual rows of the table and a column selector for each column which selects the element containing the column value within a given row.
+For a given column element, its column selector is synthesized using the following criteria:
 
-For a given row element, its row selector is synthesized as follows:
+*Plausibility*. A selector is a plausible column selector if it 1) consists of a subset of the classes on the column element and 2) only selects the give column element when applied on the corresponding row element.
 
-1. Generate a list of all possible combinations of the classes on the element’s `class` attribute and initialize their scores to 0. For example, an element with a `class` attribute value of “a b c” would generate “a”, “b”, “c”, “a b”, “b c” and  “a b c”
-2. Retrieve a list of all of the sibling elements of the element. For each sibling element, check whether its `class` attribute contains each of the generated class combinations. If a sibling’s `class` attribute contains a given class combination, the combination’s score is incremented by 1
-3. Pick the class combinations with the highest score across the element’s siblings and then select the combination with the fewest number of classes. For example, if the combinations with the highest score are “a” and “b c”, “a” will be picked. This is done to ensure that only the minimal required classes are used for selection
-4. Combine the tag name of the element with the final selector to further ensure that it only selects the desired row elements. For example, if the row element is has a tag name of `DIV` and the final selector is “a” the synthesized selector will be `div.a`
+*Weight*. A selector has a weight equal to the number of classes it consists of.
 
-For a given column element, its column selector is synthesized as follows:
+*Best*. A selector is the best if it is plausible and there is no other selector that has a lower weight than it has. As before, we favor selectors with the lowest weight and only pick one if there are multiple that fulfil the criteria.
 
-1. Generate a list of all possible combinations of the classes on the element’s `class` attribute, as previously described, and initialize their scores to 0
-2. For each class combination, check that it only selects a single element within the row element and that that element corresponds to the given column element. If a class combination satisfies the check, its score is incremented by 1
-3. Pick the class combinations with the highest score and then select the combination with the fewest number of classes as previously described
-4. Combine the tag name of the element with the final selector to further ensure that it only selects the desired column element as previously described
+One aspect of future work is saving the list of all selectors that fufil the criteria and making them available to users to view and pick from. This would be similar to Mayer et el's user interaction model called *program navigation* [@mayer2015] that gives users the opportunity to navigate all valid, synthesized programs and pick the best one.
 
-One aspect of future work is saving the list of all valid selectors, instead of just picking one, and making them available to users to see and pick from. This would be similar to Mayer et el's user interaction model called *program navigation* [@mayer2015] that gives users the opportunity to navigate all valid, synthesized programs and pick the best one.
+### Determing Row Elements
 
-## Wrapper Induction Algorithm
+When a user first demonstrates a column value, Joker uses the demonstration to synthesize a row selector that will identify all the row elements in the website and a column selector that will identify the element that contains the column value. During subsequent demonstrations, Joker simply synthesizes a column selector for the column element that contains the demonstrated column value. Like similar approaches [@huynh2006; @lin2009; @chasins2018], all demonstrations have to be made from the same row element.
 
-In order to generate reusable scrapers from user demonstrations, our system solves the wrapper induction task: generalizing from a small set of user-provided examples to a scraping specification that will work on other parts of the website, and on future versions of the website.
+Given a demonstrated column value, row elements are determined using the following criteria:
 
-We take an approach similar to that used in other tools like Vegemite [@lin2009] and Sifter [@huynh2006]:
+*Plausibility*. An element `R` is a plausible row element if 1) it is within the `body` element of the DOM, 2) it is in the parent path of the column element `C` containing the demonstrated column value `V` and 3) the CSS selector `S` of element `C` only identifies `C` when applied it.
 
-- We synthesize a single *row selector* for the website: a CSS selector that returns a set of Document Object Model (DOM) elements corresponding to individual rows of the table.
-- For each column in the table, we synthesize a *column selector*, a CSS selector that returns the element containing the column value within that row.
+*Weight*. A row element `R` is has a weight `W` equal to the number of its siblings for which the CSS selector `S` of column element `C` only identifies `C` when applied to it`.
 
-One important difference is that our algorithm only accepts row elements that have direct siblings with a similar structure. We refer to this as the *row-sibling* constraint. Later, we describe how the constraint provides a useful simplification of the wrapper induction task and discuss the resulting limitations this puts on our system.
+*Best*. A row element `R` is the best if it is plausible and there is no other row element that has a higher weight than it. We favor row elements with the highest weight ensure that we end up with a data set with the highest number of column values corresponding to `V`. If there are multiple plausible row elements with the highest weight, we pick the one closet to the column element `C` in its parent path.
 
-When a user first demonstrates a column value, the generalization algorithm is responsible for turning the demonstration into a row selector that will correctly identify all the row elements in the website and a column selector that will correctly identify the element that contains the column value within a row element. During subsequent demonstrations, the generalization algorithm uses the generated row selector to find the row element that contains the column value and generates a column selector which identifies the corresponding column element.
-
-At a high level, the wrapper induction algorithm’s challenge is to traverse far enough up in the DOM tree from the demonstrated element to find the element which corresponds to the row. We solve this using a heuristic; the basic intuition is to find a large set of elements with similar parallel structure. Consider the sample HTML layout in @fig:algorithm, which displays a truncated table of superheroes, with each row containing some nested structure:
+@fig:algorithm provides a concrete example of how the above criteria are applied to determine a row element from the demonstration of a column value.
 
 <div class="pdf-only">
 \begin{figure*}
   \includegraphics[width=\textwidth]{media/algorithm.png}
-  \caption{\label{fig:algorithm}Our system applies a heuristic to identify DOM elements that correspond to rows in the data table.}
+  \caption{\label{fig:algorithm} A example of how Joker's wrapper indunction algorithm is used to determine the row element from the demonstration of a column value. The row element is correctly determind to be R2.}
 \end{figure*}
 </div>
 
-The user performs a demonstration by clicking on element $a$ in @fig:algorithm containing “Tony Stark”. Our algorithm traverses upwards from the demonstrated element, considering each successive parent element ($b1$, $c1$ and $d$ in @fig:algorithm) as a potential candidate for the row element. For each parent element `el`, the process is as follows:
+## Web Scraping Formulas
 
-1. Compute a column selector `selector` that, when executed on `el`, only returns the demonstrated element
-2. For each sibling `el'` of `el`, execute `selector` on `el'` and record whether the selector returns an element. If it does, this suggests that `el'` has some parallel structure to `el`.
-3. Compute $el_{siblings}$, the number of sibling elements of `el` which have parallel structure.
+Joker's formula language is similar to that of visual database query systems like SIEUFERD [@bakke2016] and Airtable [@zotero-228]. Formulas automatically apply across an entire column of data and reference other column names instead of values in specific rows. This is more efficient than users having to copy a formula across a column as in traditional spreadsheets like Microsoft Excel and Google Sheets. It of course comes at the cost of not being able to specify a formula for only a subset of column cells but this hasn't yet come up in our use cases. The language currently consists of the following formulas:
 
-Notice how the *row-sibling* constraint simplifies the problem. Row candidates without siblings with parallel structure ($b1$ in @fig:algorithm) have $el_{siblings}$ = 0, thus disqualifying them.
+### QuerySelector(rowElement, selector)
 
-The algorithm stops traversing upwards once it reaches the `BODY` element. It chooses the element with the largest positive value of $el_{siblings}$ as the row element, preferring nodes lower in the tree as a tiebreaker. It then generates a _row selector_ which returns the row element and all its direct siblings. The final value of `selector` is the column selector since traverses from the row element to the demonstrated data value. These row and column selectors are then used to generate an adapter as a combination of formulas which returns the DOM elements corresponding to a data row in the table and sets up the bidirectional synchronization.
+This formula is used to represent the web scraping program synthesized from demonstrations. `rowElement` is a special keyword that reference a hidden column containing the DOM elements that correspond to the rows of the data set. `selector` is the synthesized CSS selector that specifices which elemnt to scrape data from. 
+
+### GetParent(element)
+
+This formula is used to traverse the DOM when the data to be scraped is made of the values of its containing and sibling elements. Demonstrations alone cannot be used to scrape such data. `element` can be a reference to a column containing a `QuerySelector` formula (`GetParent(A)`) or a `QuerySelector` formula itself (`=GetParent(QuerySelector(...))`).
+
+### GetAttribute(element, attribute)
+
+This formula is used to scrape data from DOM attributes. An example of this are URLs which are available on the `href` attribute of link elements. `element` is as described for `GetParent` and `attribute` is the name of the attribute to scrape (`GetAttribute(A, "href")`).
 
 # Design Principles {#sec:design-principles}
 
@@ -200,7 +197,7 @@ Our second evaluation of Joker reports the qualitative results of a formative us
 
 ### Participants
 
-We recruited 5 participants with backgrounds ranging from limited programming experience to Software Engineers. All participants where familiar with Microsfot Excel spreadsheets but not all had used Excel spreadsheet formulas. 4 of the participants had web development experience with 3 of them having extensive experience. 3 of the participants had web scraping scraping with only 1 having extensive experience.
+We recruited 5 participants with backgrounds ranging from limited programming experience to Software Engineers. All participants were familiar with Microsoft Excel spreadsheets but not all had used Excel spreadsheet formulas. 4 of the participants had web development experience with 3 of them having extensive experience. 3 of the participants had web scraping scraping with only 1 having extensive experience.
 
 ### Tasks
 
@@ -258,7 +255,7 @@ Our unified model for web scraping and customization builds on existing work in 
 
 FlashExtract [@le2014] is a programming-by-example tool for data extraction. In addition to demonstrating whole values, it supports demonstrating substrings of values. Our model only supports this through formulas. This is not as end-user friendly but allows for a wider range of operations such as indicating whether demonstrated values contain a certain value or are greater than or less than a certain value.
 
-Rousillon [@chasins2018] is a tool that enables end-users to scrape distributed, hierarchical web data. It presents the web scraping code generated by demonstration as an editable, high-level, block-based language called Helena [@zotero-179]. While Helena can be used to specify complex web scraping tasks like adding control flow, it does not present the synthesized web scraping program. This means that users can only scrape what can be demonstrated. Our modek on the other hand displays the synthesized program as a formula which can be modified to increase the expressiveness of scraping.
+Rousillon [@chasins2018] is a tool that enables end-users to scrape distributed, hierarchical web data. It presents the web scraping code generated by demonstration as an editable, high-level, block-based language called Helena [@zotero-179]. While Helena can be used to specify complex web scraping tasks like adding control flow, it does not present the synthesized web scraping program. This means that users can only scrape what can be demonstrated. Our model on the other hand displays the synthesized program as a formula which can be modified to increase the expressiveness of scraping.
 
 ## End-user Web Customization
 
