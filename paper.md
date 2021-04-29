@@ -110,9 +110,9 @@ When a user first demonstrates a column value, Joker uses the demonstration to s
 
 Given a demonstrated column value, row elements are determined using the following criteria:
 
-*Plausibility*. An element `R` is a plausible row element if 1) it is within the `BODY` element of the DOM, 2) it is in the parent path of the column element `C` containing the demonstrated column value `V` and 3) the CSS selector `S` of element `C` only identifies `C` when applied to `R`.
+*Plausibility*. An element `R` is a plausible row element if 1) it is within the `BODY` element of the DOM, 2) it is in the parent path of the column element `C` containing the demonstrated column value `V` and 3) the CSS selector `S` of element `C` identifies a column element `C'` when applied to `R`
 
-*Weight*. A row element `R` has a weight `W` equal to the number of its siblings for which the CSS selector `S` of column element `C` only identifies `C` when applied to it`.
+*Weight*. A row element `R` has a weight `W` equal to the number of its siblings for which the CSS selector `S` of column element `C` only identifies `C` when applied to it. This is an enforcement of the *row-sibling* constraint. We want to find an `R` with the most number of siblings with a similar structure
 
 *Best*. A row element `R` is the best if it is plausible and there is no other row element that has a higher weight than it. We favor row elements with the highest weight to ensure that we end up with a data set with the highest number of column values corresponding to the column that `V` belongs to. If there are multiple plausible row elements with the highest weight, we pick the one closet to the column element `C` in its parent path.
 
