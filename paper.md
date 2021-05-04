@@ -14,7 +14,7 @@ abstract: |
   Tools that enable end-users to customize websites typically use a two-stage workflow: first, users extract data into a structured form, second, they use that extracted data to augment the original website in some way. This two-stage workflow poses a usability barrier because it requires users to make upfront decisions about what data to extract, rather than allowing them to incrementally extract data as they augment it.
 
   In this paper, we present a new, unified interaction model for web customization that encompasses both extraction and augmentation. The key idea is to provide users with a spreadsheet-like formula language that can be used for both data extraction and augmentation. We also provide a programming-by-demonstration (PBD) interface through which users can create data extraction formulas by clicking on elements in the website. This model allows users to naturally and iteratively move between extraction and augmentation.
-  
+
   To illustrate our unified interaction model for web customization, we have implemented it as a browser extension called Joker. Through case studies of using Joker ourselves, we show that Joker can be used to customize many real-world websites. We also present a formative user study with five participants, which showed that people with a wide range of technical backgrounds can use Joker to customize websites, and also revealed some interesting limitations of our approach. Finally, we present a heuristic evaluation of our design using the Cognitive Dimensions framework, exploring why it promotes a more flexible web customization experience.
 
 ---
@@ -69,7 +69,7 @@ To diagnose the issue, Jen inspects the website’s source code using her browse
 
 Jen sees in the source code that the all of the letters of the "Sponsored" label, both visible and invisible, are contained in a single ancestor element with the CSS selector `"div.s-item__title--tagblock"`. Thus, she is able to scrape the full word by writing a query selector formula with that CSS selector. She can copy the formula from the previous column as a template.
 
-This formula populates the column with the text content of the "Sponsored" element, which she can now use for string manipulation and sorting. By writing a formula, Jen is able to overcome the limitations of extracting by demonstration. The mixed methods of extraction exemplify our tool's support of **prodirect manipulation**. 
+This formula populates the column with the text content of the "Sponsored" element, which she can now use for string manipulation and sorting. By writing a formula, Jen is able to overcome the limitations of extracting by demonstration. The mixed methods of extraction exemplify our tool's support of **prodirect manipulation**.
 
 *Filtering Sponsored Results* (@fig:ebay Part C): The query selector that Jen just wrote returns all of the text within each of the targeted "Sponsored" elements, including any invisible letters. eBay's web design is that sponsored listings have a visible "Sponsored" label with invisible inserted letters, and non-sponsored listings have an invisible "Sponsored" label. Thus, for sponsored listings, the query returns garbled text (e.g. "JSp3onMsoV3rXNYFedZB"), and for non-sponsored listings, the query returns "Sponsored". Jen identifies this correlation by scrolling through the scraped data in the column and comparing them to what she sees on the web page. Then, in a new column, Jen writes a formula that returns whether or not the previous column’s text includes the word “Sponsored.” Finally, she sorts this column of booleans, which, by bidirectional synchronization, also sorts the listings on the website. As a result of this sort, non-sponsored results are all listed before any sponsored results, which achieves Jen's goal of browsing without seeing sponsored results. This customization is possible because Joker provides **unified user interaction**, where extraction and augmentation are performed in conjunction.
 
@@ -78,7 +78,7 @@ In this way, Jen is able to use Joker to customize the eBay website, without nee
 
 # System Implementation {#sec:implementation}
 
-In this section, we describe Joker's formula language and include a table of currently available formulas. Then, we outline the *wrapper induction* [@kushmerick2000] algorithm that Joker's PBD interface uses to synthesize the row and column selectors presented in formulas. 
+In this section, we describe Joker's formula language in more detail. Then, we outline the *wrapper induction* [@kushmerick2000] algorithm that Joker's PBD interface uses to synthesize the row and column selectors presented in formulas.
 
 ## Web Scraping Formulas
 
@@ -86,7 +86,7 @@ Joker's formula language is similar to that of visual database query systems lik
 
 ### QuerySelector(rowElement, selector)
 
-This formula is used to represent column value extractions. `rowElement` is a special keyword that references a hidden column containing the DOM elements that correspond to the rows of the data set. `selector` is the synthesized CSS selector that specifies the column element. 
+This formula is used to represent column value extractions. `rowElement` is a special keyword that references a hidden column containing the DOM elements that correspond to the rows of the data set. `selector` is the synthesized CSS selector that specifies the column element.
 
 ### GetAttribute(element, attribute)
 
@@ -140,13 +140,14 @@ Given a column element, Joker synthesizes its column selector using the followin
 # Design Principles {#sec:design-principles}
 
 Below, we describe three existing design principles that Joker embodies in order to characterize its design.
+
 ## Unified User Interaction
 
 Prior to this work, extraction and augmentation in web customization systems [@huynh2006; @lin2009] were divided: all extractions had to be performed prior to augmentations in a separate phase. Joker represents extraction and augmentation using the a single spreadsheet formula language. Because of this, both can be performed in a single phase, with users being able to interleave the two as desired. This makes the process of customization more iterative and free-form. We can see this in the Ebay example in [@sec:examples]: when the user extracts a listing's "Sponsored" label, they observe that non-sponsored listings have an invisible "Sponsored" label while sponsored listings have a visible "Sponsored" label that consists of a garbled form "Sponsored". Because of Joker's unified user interaction, the user receives the results of scraping in the table and can immediately write an augmentation formula to validate this hypothesis. Without the unified interaction, the user would have to extract all the desired columns to see all their values before ever getting to notice the pattern and validate their hypothesis.
 
 ## Functional Reactive Programming
 
-Functional reactive programming (FRP) utilizes functions to specify operations in a reactive programming paradigm. It has seen wide adoption in end-user programming through implementations such as spreadsheet formula languages (Microsoft Excel & Google Sheets) and formula languages for low-code programming environments (Microsoft Power Fx [@2021g], Google AppSheet [@2021h], Airtable [@2021f], Glide [@2021a], Coda [@2021c] & Gneiss [@chang2014]).
+Functional reactive programming (FRP) enables specifying logic using pure, stateless functions that automatically update in response to upstream changes. This paradigm has famously been used by millions of end users in the form of spreadsheet formula languages (Microsoft Excel & Google Sheets), and has also been extended to richer end-user programming environments (Microsoft Power Fx [@2021g], Google AppSheet [@2021h], Airtable [@2021f], Glide [@2021a], Coda [@2021c] & Gneiss [@chang2014]).
 
 Joker's use of FRP makes it easier for users to program in its spreadsheet formula language. With traditional programming, the eBay example in [@sec:examples] in which a user extracts every listing's "Sponsored" label would be much more complicated. The user would need to understand programming constructs such as state, variables, looping and data flow in order to write a program to extract the label. In Joker, all a user needs to specify is the CSS selector that identifies the element containing the label. Joker takes care of managing state, variables, looping and data flow!
 
