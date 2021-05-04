@@ -82,7 +82,7 @@ In this section, we describe Joker's formula language and include a table of cur
 
 ## Web Scraping Formulas
 
-Joker's formula language is similar to that of visual database query systems like SIEUFERD [@bakke2016] and Airtable [@2021f]. Formulas automatically apply across an entire column of data and reference other column names instead of values in specific rows. The language currently consists of the formulas shown in Figure X. Below, we highlight the formulas related to extraction:
+Joker's formula language is similar to that of visual database query systems like SIEUFERD [@bakke2016] and Airtable [@2021f]. Formulas automatically apply across an entire column of data and reference other column names instead of values in specific rows. Below, we highlight the formulas related to extraction:
 
 ### QuerySelector(rowElement, selector)
 
@@ -109,15 +109,6 @@ Given a demonstrated column value, Joker uses the following criteria to determin
 *Weight*. A row element `R` has a weight `W` equal to the number of its siblings for which the CSS selector `S` of column element `C` only identifies a single element. This ensures that we favor row elements that will result in the highest number of rows in the resulting data table.
 
 *Best*. A row element `R` is the best if it is plausible and there is no other row element that has a higher weight than it. If there are multiple plausible row elements with the highest weight, we pick the one closet to the column element `C` in its parent path.
-
-@fig:algorithm provides a concrete example of how the listed criteria are applied to determine a row element from the demonstration of a column value.
-
-<div class="pdf-only">
-\begin{figure*}
-  \includegraphics[width=\textwidth]{media/algorithm.png}
-  \caption{\label{fig:algorithm} An example of how Joker determines the row element from the demonstration of a column value. The row element is correctly determind to be R2 because it is plausible and has the highest weight.}
-\end{figure*}
-</div>
 
 ### Synthesizing CSS Selectors
 
