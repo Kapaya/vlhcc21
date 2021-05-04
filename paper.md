@@ -82,19 +82,29 @@ In this section, we describe Joker's formula language in more detail. Then, we o
 
 ## Web Scraping Formulas
 
-Joker's formula language is similar to that of visual database query systems like SIEUFERD [@bakke2016] and Airtable [@2021f]. Formulas automatically apply across an entire column of data and reference other column names instead of values in specific rows. Below, we highlight the formulas related to extraction:
+The Wildcard customization tool includes a formula language for augmentation, including operators for basic arithmetic and string manipulation, as well as more advanced operators that fetch data from web APIs. As in other tabular interfaces like SIEUFERD [@bakke2016] and Airtable [@2021f], formulas apply to a whole column at a time rather than a single cell, and can reference other columns by name.  Joker extends this base language with new constructs which enable it to apply to _data extraction_ instead of just augmentation.
 
-### QuerySelector(rowElement, selector)
+We added DOM elements as a data type in the language, alongside strings, numbers, and booleans. Because the language runs in a JavaScript interpreter, we simply use native JavaScript values to represent DOM elements in the language. DOM elements are displayed visually by showing their inner text contents. They can also be implicitly typecast to strings for use in other formulas; for example, a string manipulation formula like `Substring` can be called on a DOM element value, and will operate on its text contents.
 
-This formula is used to represent column value extractions. `rowElement` is a special keyword that references a hidden column containing the DOM elements that correspond to the rows of the data set. `selector` is the synthesized CSS selector that specifies the column element.
+We also added several functions to the formula language for traversing the DOM and performing extractions, summarized below with their types:
 
-### GetAttribute(element, attribute)
+- `QuerySelector(el: Element, sel: string): Element`. Executes the CSS selector `sel` inside of element `el`, and returns the first matching element.
+- `GetAttribute(el: Element, attribute: string): string`. Returns the value for an attribute on an element.
+- `GetParent(el: Element): Element`. Returns the parent of a given element.
 
-This formula is used to represent DOM attribute value extractions. `element` is as described for `GetParent` and `attribute` is the name of the attribute to scrape (e.g. `GetAttribute(A, "href")`).
+To extract data from a row, formulas need a way to reference the current row, so we added a construct to support this use case. Every row in the table maps to one DOM element in the page; we allow formulas to access this DOM element via a special keyword, `this`. In some sense, `this` can be seen as a hidden extra column of data in the table containing DOM elements.
 
-### GetParent(element)
+While many more functions could be added to expose more of the underlying DOM API in our language, we found that in practice these three functions provided ample power through composition. For example, here is a typical workflow that combines these formulas.
 
-This formula is used to traverse the DOM from an element in order to perform an extraction. `element` can be a reference to a column containing a `QuerySelector` formula (`GetParent(A)`) or a `QuerySelector` formula itself (`=GetParent(QuerySelector(...))`).
+First, the user performs demonstrations in the page. The demonstration process produces a single formula, which executes a CSS selector on each row in the page:
+
+`=QuerySelector(this, ".title")`
+
+Note that the formula references the DOM element corresponding to each row using the `this` keyword.
+
+Then, the user might notice that the parent element of that element is a link element that contains a link URL in the `href` attribute. The user can extract the link by combining all three functions in a single formula:
+
+`=GetAttribute(GetParent(QuerySelector(this, ".title")), 'href')`
 
 ## Wrapper Induction
 
