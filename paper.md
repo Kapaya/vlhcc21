@@ -227,41 +227,37 @@ Joker is most effective on websites with data that is presented as many similarl
 
 ## User Study
 
-Our second evaluation of Joker is a formative user study that was focused on providing insights on barriers to its usability.
+We conducted a small formative user study to understand how people would interact with Joker.
 
 ### Participants
 
-We recruited 5 participants with backgrounds ranging from limited programming experience to Software Engineers. All participants were familiar with Microsoft Excel spreadsheets but not all had used Excel spreadsheet formulas. 4 of the participants had web development experience with 3 of them having extensive experience. 3 of the participants had web extraction experience with only 1 having extensive experience.
-
-### Tasks
-
-The participants completed 7 tasks across 2 websites towards the goal of web customization. The first website was MIT's course catalog and the second was eBay. The tasks were as follows:
-
-*MIT Course Catalog.* 1a) Extract course titles, 1b) Extract course prerequisites, 1c) Add a column that indicates whether a course has a prerequisite & 1d) Add a column that indicates whether a course does not have a prerequisite and is offered in the fall.
-
-*eBay.* 2a) Extract title from iPhone listings, 2b) Extract iPhone listing price, & 2c) Create a column that indicates whether an iPhone listing is sponsored.
+We recruited 5 participants with varying backgrounds. 3 participants were familiar with spreadsheet formulas. 3 participants had extensive web development experience, 1 had a small amount of prior experience, and 1 had no experience. 3 participants had previously extracted data from websites.
 
 ### Protocol
 
-All participants attempted all the tasks. We started each session with a description of Joker and provided a brief tutorial of its main features on a website not used for the tasks. There was no time limit for tasks but we provided hints (such as suggestions to read formula documentation or open the browser tools to determine why demonstrations were not sufficient) whenever a participant had exhausted the knowledge available to them.
+The participants completed 7 web customization tasks across 2 websites. All participants attempted all the tasks.
+
+First, we asked participants to customize a website with a relatively simple HTML structure: the MIT EECS course catalog website. All data _extraction_ on this site can be performed with demonstrations alone in Joker, although augmentation still requires writing formulas. The specific tasks were the following: 1a) Extract course titles, 1b) Extract course prerequisites, 1c) Add a column that indicates whether a course has a prerequisite & 1d) Add a column that indicates whether a course has no prerequisites and is offered in the fall term.
+
+Next, we asked participants to customize a website with a more complex HTML structure: the search results page for the eBay shopping website. Due to the page's complexity, demonstrations alone are not sufficient to extract data from this website in Joker; users must also directly edit extraction formulas.  The specific tasks were the following: 2a) Extract title from iPhone listings, 2b) Extract iPhone listing price, & 2c) Create a column that indicates whether an iPhone listing is sponsored.
+
+Each session was 60 minutes long and conducted over a recorded videoconference. We started each session with a description of Joker and provided a brief tutorial of its main features on a sample website not used in the tasks. There was no time limit for completing the tasks. Users were encouraged to speak aloud as they worked.
+
+Because some of the tasks build on results of previous tasks, we wanted to ensure all participants made enough progress to gather useful feedback. Therefore, whenever a participant got stuck for several minutes, we recorded why they were stuck and then offered hints for how to proceed (such as suggestions to read formula documentation or open the browser dev tools). While all participants were able to complete all tasks with hints, this obviously does not mean they could have completed the task unassisted. Our goal was not to simply measure whether users completed the task, but rather to gain qualitative insight into the barriers they faced.
 
 ### Results
 
-All participants were able to complete all the tasks with the help of hints when they got stuck and were unable to make progress on their own. This does not equal validation because our focus was to determine barriers to usability. We describe the results along the following dimensions:
+Most participants took advantage of the unified interaction model to interleave extraction and augmentation tasks, rather than performing all extraction up front. For example, on task 1, most participants extracted the prerequisite status by demonstration, added one or more columns to the table to perform some string operations on the prerequisite status, and then continued on to extract more information from the web page by demonstration. Furthermore, we hypothesize that in a less controlled setting, users would be even more likely to interleave extraction and augmentation, since the task may be less well defined at the beginning.
 
-*Data Extraction.* All participants where able to complete the tasks that only involved extraction by demonstration (1a, 1b & 2a) quickly and without any hints. For tasks that involved switching between demonstrations and editing formulas, there was some confusion about what column demonstrated values would be extracted into. The active column is managed by a toolbar at the top of the website but participants hardly noticed it and assumed all operations had to be performed on the table.
+We observed an interesting usability issue: when participants were directly interacting with formulas in the table, and then switched extracting data by demonstration, they sometimes got confused about how their demonstrations would affect the contents of the table. For example, multiple participants intended to add a new column by demonstrating an extraction, but instead accidentally overwrote the contents of an existing column. This poses a design challenge because the user's demonstrations occur in the web page, so they cannot be directly interacting with the table while demonstrating; this suggests that the interface needs to do a better job indicating where the results of a demonstration will be inserted in the table.
 
-*Data Augmentation.* Participants were unsure why demonstrations did not work when completing tasks that required using extraction formulas (2b, 2c). As a result, they wasted time attempting to demonstrate using various means. The participant with no web development experience had the hardest time as expected but was able to utilize a series of hints we provided to accomplish 2b. The rest of the participants were able to accomplish 2b with minimal hints but required a lot more when completing 2c.
+On the relatively simple MIT course catalog website, all participants were able to extract the relevant data from the page within seconds, simply performing demonstrations with a few clicks. This suggests that when Joker's generalization algorithm works well, it can be an effective tool for data extraction, even for users with limited programming experience. P1, who had no prior web development experience, said: *"you could hover and [the data] was already selected...that was very nice"*. P3, upon seeing the tutorial for extraction by demonstration, said "that's like black magic."
 
-*Formula Language.* Participants had varying degrees of trouble when completing the tasks that involved using formulas (1c, 1d, 2c). Most of the confusion resulted from formula parameters and return values. The formula bar has an autocomplete feature that shows the documentation for a given formula. The documentation consists of the parameters a formula takes and a brief description of each parameter. However, this wasn't always sufficient to enable participants to use formulas correctly.
+On the more complex eBay website where demonstration alone was not sufficient, results were more varied. P1 struggled to complete the task, saying that *"looking at HTML is a bit much"*; this suggests that more work could be done to make the experience usable for complete novices. However, users with more web development experience were able to use the tool to perform more complex extractions, such as directly writing CSS query selectors into the formula bar. P2 and P3 both reported that Joker's live feedback loop was easier to use and faster than other approaches to web extraction; P3 noted that *"[with any other approach], it would have been slower to specify and slower to validate that I specified it correctly"*
 
-### Discussion
+It was challenging for some participants to switch between using the browser's developer tools and the Joker interface when doing complex extraction tasks. While we chose not to build HTML inspection into the Joker UI because the browser already provides a very rich set of tools, users sometimes were not able to tell how elements in the Joker table corresponded to elements in the browser's element inspector.
 
-One participant, upon seeing our tutorial on extraction by demonstration, said "that's like black magic." Tasks that involved augmentation formulas took longer than those that involved demonstrations but this was mostly related to the formula documentation not providing enough usage information. More work is needed to show users what exactly a given formula does. When asked how they would accomplish the tasks without Joker, the participant with limited programming experience responded with "I don't think I would know how to do it."
-
-Participants that were familiar with web development were able to take advantage of the extraction formulas. This included the participants that had limited web scraping experience and suggests that the pure functional semantics and use of CSS selectors for identifying elements to extract data from makes the task easier. As predicted, participants not familiar with web development didn't have the required background to understand how CSS selectors work. This highlights the need to further explore how extraction formulas can be made more accessible to end-users.
-
-All participants had trouble figuring out which column the demonstrated values would be scraped into, especially when demonstrations where interleaved with use of formulas. This points to the need for the switch between demonstrating and using formulas to be more tightly coupled visually. For extraction formulas, the most notable issue was the lack of feedback about why demonstrations were not sufficient to extract a value. As a result, users wasted time trying to demonstrate in various ways instead of thinking about editing the synthesized formula to achieve the task. In order for PBD to effectively enhance our formula language, users need to receive feedback that the formula synthesized from a demonstration is not sufficient to extract the desired data.
+In general, participants were able to learn the formula language by using an autocomplete dropdown with inline documentation, which we developed as part of the Joker extension. In some cases, participants were able to immediately construct correct formulas on the first try; in other cases it took several attempts and some hints from the moderator to try a relevant function. While better documentation and error messages could help improve the learnability of the formula language, we also did not find it surprising that participants required some time to learn a completely unfamiliar formula language. 
 
 ## Cognitive Dimensions Analysis
 
