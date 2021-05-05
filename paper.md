@@ -33,9 +33,9 @@ To illustrate our unified interaction model for web customization, we have built
 
 Joker adds two key features to Wildcard:
 
-**A Unified Formula Language For Extraction & Augmentation**: Wildcard’s formula language only supported primitive values like strings and numbers aimed at augmentation. Joker extends this language by introducing Document Object Model (DOM) elements as a new type of value, and adding a new set of formulas for performing operations on them. This includes querying elements with Cascading Stylesheet Selectors (CSS) selectors and traversing the DOM. With this approach, a single formula language is used to express both extraction and augmentation tasks, even within a single formula expression.
+**A Unified formula language For extraction & augmentation**: Wildcard’s formula language only supported primitive values like strings and numbers aimed at augmentation. Joker extends this language by introducing Document Object Model (DOM) elements as a new type of value, and adding a new set of formulas for performing operations on them. This includes querying elements with Cascading Stylesheet Selectors (CSS) selectors and traversing the DOM. With this approach, a single formula language is used to express both extraction and augmentation tasks, even within a single formula expression.
 
-**A PBD Interface For Creating Extraction Formulas**: Directly writing extraction formulas can be challenging for end-users, so Joker also implements a PBD interface that uses demonstrations to synthesize extraction formulas. Demonstrations have been used to synthesize data extraction programs in a number of prior systems. However, a key property of our design is that the extraction program synthesized from the demonstration is made visible to the user as a spreadsheet formula that can be edited and executed using pure functional semantics.
+**A PBD interface For creating extraction formulas**: Directly writing extraction formulas can be challenging for end-users, so Joker also implements a PBD interface that uses demonstrations to synthesize extraction formulas. Demonstrations have been used to synthesize data extraction programs in a number of prior systems. However, a key property of our design is that the extraction program synthesized from the demonstration is made visible to the user as a spreadsheet formula that can be edited and executed using pure functional semantics.
 
 [@sec:examples] describes a concrete scenario, showing how Joker enables a user to complete a useful customization task. In [@sec:implementation], we elaborate on the implementation of our formula language, as well as the algorithm used by our PBD interface. Then, in [@sec:design-principles], we describe some of the broader design principles that Joker embodies and discuss their applications in other contexts.
 
@@ -144,13 +144,15 @@ Below, we describe three existing design principles that Joker embodies in order
 
 ## Unified User Interaction
 
-Prior to this work, extraction and augmentation in web customization systems [@huynh2006; @lin2009] were divided: all extractions had to be performed prior to augmentations in a separate phase. Joker represents extraction and augmentation using the a single spreadsheet formula language. Because of this, both can be performed in a single phase, with users being able to interleave the two as desired. This makes the process of customization more iterative and free-form. We can see this in the Ebay example in [@sec:examples]: when the user extracts a listing's "Sponsored" label, they observe that non-sponsored listings have an invisible "Sponsored" label while sponsored listings have a visible "Sponsored" label that consists of a garbled form "Sponsored". Because of Joker's unified user interaction, the user receives the results of scraping in the table and can immediately write an augmentation formula to validate this hypothesis. Without the unified interaction, the user would have to extract all the desired columns to see all their values before ever getting to notice the pattern and validate their hypothesis.
+Prior to this work, extraction and augmentation in web customization systems [@huynh2006; @lin2009] were divided: all extractions had to be performed prior to augmentations in a separate phase. Joker represents extraction and augmentation using the a single spreadsheet formula language. Because of this, both can be performed in a single phase, with users being able to interleave the two as desired. This makes the process of customization more iterative and free-form.
+
+We can see this in the Ebay example in [@sec:examples]: when the user extracts a listing's "Sponsored" label, they observe that non-sponsored listings have an invisible "Sponsored" label while sponsored listings have a visible "Sponsored" label that consists of a garbled form "Sponsored". Because of Joker's unified user interaction, the user receives the results of scraping in the table and can immediately write an augmentation formula to validate this hypothesis. Without the unified interaction, the user would have to extract all the desired columns to see all their values before ever getting to notice the pattern and validate their hypothesis.
 
 ## Functional Reactive Programming
 
 Functional reactive programming (FRP) enables specifying logic using pure, stateless functions that automatically update in response to upstream changes. This paradigm has famously been used by millions of end users in the form of spreadsheet formula languages (Microsoft Excel & Google Sheets), and has also been extended to richer end-user programming environments (Microsoft Power Fx [@2021g], Google AppSheet [@2021h], Airtable [@2021f], Glide [@2021a], Coda [@2021c] & Gneiss [@chang2014]).
 
-Joker's use of FRP makes it easier for users to program in its spreadsheet formula language. With traditional programming, the eBay example in [@sec:examples] in which a user extracts every listing's "Sponsored" label would be much more complicated. The user would need to understand programming constructs such as state, variables, looping and data flow in order to write a program to extract the label. In Joker, all a user needs to specify is the CSS selector that identifies the element containing the label. Joker takes care of managing state, variables, looping and data flow!
+Joker's use of FRP makes it easier for users to program in its spreadsheet formula language. With traditional programming, the eBay example in [@sec:examples] in which a user extracts every listing's "Sponsored" label would be much more complicated. The user would need to understand programming constructs such as state, variables, looping and data flow in order to write a program to extract the label. In Joker, all a user needs to specify is the CSS selector that identifies the element containing the label. Joker takes care of managing state, variables, looping and data flow.
 
 A key limitation of this approach is that users need to understand how CSS selectors work in order to perform extractions. Because the formula language utilizes pure functional semantics, users can iterate on CSS selectors as many times as they need to without having to worry about side effects. This makes the authoring of CSS selectors more accessible but more work remains.
 
@@ -164,13 +166,19 @@ We can see a similar prodirect manipulation interaction model in Sketch-N-Sketch
 
 # Evaluation {#sec:evaluation}
 
-In this section, we evaluate Joker with a suite of case studies that show its capabilities and limitations, a formative user study and a Cognitive Dimensions of Notion analysis [@blackwell2001]. The case studies list websites that can be customized by Joker and those that cannot be. The user study provides insights on which aspects of Joker work well and which don't. The Cognitive Dimensions of Notion analysis compares Joker's design to related approaches and interaction standards.
+We evaluate our interaction model and tool in terms of three research questions:
+
+**RQ1: What kinds of websites can this model operate effectively on?** We evaluate this with a suite of case studies from using Joker ourselves, which demonstrate its capabilities and limitations.
+
+**RQ2: How are users of different backgrounds able to use the system?** We evaluate this with a small formative user study with users of different backgrounds.
+
+**RQ3: What are the essential design dimensions that distinguish this model from other approaches?** We evaluate this with a heuristic analysis using the Cognitive Dimensions of Notation framework.
 
 ## Case Studies
 
 Following a method used to evaluate visualizations through a diverse gallery of examples [@ren2018], our first evaluation of Joker provides an case studies of popular websites on which Joker can be used for web customization and on which it fails. For the websites on which Joker can be used, we provide the sequence of interactions needed to achieve the customizations. For the websites on which Joker fails, we provide an explanation.
 
-### Websites Joker Can Be Used On
+### Successful applications
 
 We have used Joker to achieve a variety of purposes across many popular websites. For example, we have used Joker to sort search results by price within the Featured page on Amazon. (Using Amazon's sort by price feature often returns irrelevant results.) In Amazon's source code, the price is split into three HTML elements: the dollar sign, the dollar amount, and the cents amount. A user can only scrape the cents element by demonstration into column A. However, because the parent element of the cents element contains all three of the price elements, the user can scrape the full price using the formula `GetParent(A)`. Next, the user can write the formula `ExtractNumber(B)` to convert the string into a numeric value. Finally, the user can sort this column by low-to-high prices. In a similar manner, we have used Joker to scrape and sort prices and ratings on the product listing pages of Target and eBay.
 
@@ -217,7 +225,7 @@ All participants were able to complete all the tasks with the help of hints when
 
 ### Discussion
 
-One participant, upon seeing our tutorial on extraction by demonstration, said "that's like black magic." Tasks that involved augmentation formulas took longer than those that involved demonstrations but this was mostly related to the formula documentation not providing enough usage information. More work is needed to show users what exactly a given formula does. When asked how they would accomplish the tasks without Joker, the participant with limited programming experience responded with "I don't think I would know how to do it." That Joker enabled them to achieve such a complex task is very promising!
+One participant, upon seeing our tutorial on extraction by demonstration, said "that's like black magic." Tasks that involved augmentation formulas took longer than those that involved demonstrations but this was mostly related to the formula documentation not providing enough usage information. More work is needed to show users what exactly a given formula does. When asked how they would accomplish the tasks without Joker, the participant with limited programming experience responded with "I don't think I would know how to do it."
 
 Participants that were familiar with web development were able to take advantage of the extraction formulas. This included the participants that had limited web scraping experience and suggests that the pure functional semantics and use of CSS selectors for identifying elements to extract data from makes the task easier. As predicted, participants not familiar with web development didn't have the required background to understand how CSS selectors work. This highlights the need to further explore how extraction formulas can be made more accessible to end-users.
 
