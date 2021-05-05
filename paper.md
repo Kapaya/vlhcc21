@@ -80,7 +80,7 @@ In this way, Jen is able to use Joker to customize the eBay website, without nee
 
 In this section, we describe Joker's formula language in more detail. Then, we outline the *wrapper induction* [@kushmerick2000] algorithm that Joker's PBD interface uses to synthesize the row and column selectors presented in formulas.
 
-## Web Scraping Formulas
+## Extraction Formulas
 
 The Wildcard customization tool includes a formula language for augmentation, including operators for basic arithmetic and string manipulation, as well as more advanced operators that fetch data from web APIs. As in other tabular interfaces like SIEUFERD [@bakke2016] and Airtable [@2021f], formulas apply to a whole column at a time rather than a single cell, and can reference other columns by name.  Joker extends this base language with new constructs which enable it to apply to _data extraction_ instead of just augmentation.
 
@@ -92,23 +92,17 @@ We also added several functions to the formula language for traversing the DOM a
 - `GetAttribute(el: Element, attribute: string): string`. Returns the value for an attribute on an element.
 - `GetParent(el: Element): Element`. Returns the parent of a given element.
 
-To extract data from a row, formulas need a way to reference the current row, so we added a construct to support this use case. Every row in the table maps to one DOM element in the page; we allow formulas to access this DOM element via a special keyword, `this`. In some sense, `this` can be seen as a hidden extra column of data in the table containing DOM elements.
+To extract data from a row, formulas need a way to reference the current row, so we added a construct to support this use case. Every row in the table maps to one DOM element in the page; we allow formulas to access this DOM element via a special keyword, `rowElement`. In some sense, `rowElement` can be seen as a hidden extra column of data in the table containing DOM elements.
 
-While many more functions could be added to expose more of the underlying DOM API in our language, we found that in practice these three functions provided ample power through composition. For example, here is a typical workflow that combines these formulas.
+While many more functions could be added to expose more of the underlying DOM API in our language, we found that in practice these three functions provided ample power through composition. For example, in [@sec:examples] we showed how `GetParent` and `GetAttribute` can be composed to traverse the DOM and extract the URL associated with a listing (`=GetAttribute(GetParent(...), "href")`).
 
-First, the user performs demonstrations in the page. The demonstration process produces a single formula, which executes a CSS selector on each row in the page:
-
-`=QuerySelector(this, ".title")`
-
-Note that the formula references the DOM element corresponding to each row using the `this` keyword.
-
-Then, the user might notice that the parent element of that element is a link element that contains a link URL in the `href` attribute. The user can extract the link by combining all three functions in a single formula:
-
-`=GetAttribute(GetParent(QuerySelector(this, ".title")), 'href')`
+Joker's unified formula language for extraction and augmentation emobodies two key design principles: **Unified User Interaction** and **Functional Reactive Programming**. By provinding a single formula language to express extractions and augmentations, Joker enales a unified user interaction model that supports interleaving the two with restriction. Furthermore, the formula language enables users to specify logic using pure, stateless functions that automatically update in response to upstream changes. This makes programming using Joker much easier and has famously been used by millions of end-users in spreadsheet formula languages (Microsoft Excel & Google Sheets), and end-user programming environments (Microsoft Power Fx [@2021g], Google AppSheet [@2021h], Airtable [@2021f], Glide [@2021a], Coda [@2021c] & Gneiss [@chang2014]).
 
 ## Wrapper Induction
 
-Wrapper induction is the task of generalizing from a few examples of data to a specification for the entire data set. Joker takes an approach similar to that used in systems like Vegemite [@lin2009] and Sifter [@huynh2006]. It synthesizes a single *row selector* for the website: a CSS selector that identifies a set of DOM elements corresponding to the rows of the data table. For each column in the table, it synthesizes a *column selector*, a CSS selector that identifies the element containing the column value. We proceed to describe the criteria used to determine row elements and then describe the criteria used to synthesize CSS selectors for row and column elements.
+Wrapper induction is the task of generalizing from a few examples of data to a specification for the entire data set. When users demonstrate a column value on a website through Joker's PDB interface, the demonstrated column value is fed into our wrapper induction algorithm. The result is an editable extraction formula that extracts all the corresponding column values. This use of PDB to generate editable code emobodies a design principle known as **Prodirect Manipulation**. The term was coined by Ravi Chugh in a position paper [@chugh2016a] in which he advocates for “novel software systems that tightly couple programmatic and direct manipulation.” In a similar fashion, Sketch-N-Sketch [@chugh2016] provides prodirect manipulation by allowing users to create an SVG shape via traditional programming and then switch to modifying its size or shape via direct manipulation.
+
+Joker takes an approach to wrapper induction similar to that used in systems like Vegemite [@lin2009] and Sifter [@huynh2006]. It synthesizes a single *row selector* for the website: a CSS selector that identifies a set of DOM elements corresponding to the rows of the data table. For each column in the table, it synthesizes a *column selector*, a CSS selector that identifies the element containing the column value. We proceed to describe the criteria used to determine row elements and then describe the criteria used to synthesize CSS selectors for row and column elements.
 
 ### Determining Row Elements
 
@@ -137,32 +131,6 @@ Given a column element, Joker synthesizes its column selector using the followin
 *Weight*. $S_{column}$ has a weight equal to the number of classes it consists of. As before, we favor selectors with lower weights.
 
 *Best*. $S_{column}$ is the best if it is plausible and there is no other selector that has a lower weight than it has.
-
-# Design Principles {#sec:design-principles}
-
-Below, we describe three existing design principles that Joker embodies in order to characterize its design.
-
-## Unified User Interaction
-
-Prior to this work, extraction and augmentation in web customization systems [@huynh2006; @lin2009] were divided: all extractions had to be performed prior to augmentations in a separate phase. Joker represents extraction and augmentation using the a single spreadsheet formula language. Because of this, both can be performed in a single phase, with users being able to interleave the two as desired. This makes the process of customization more iterative and free-form.
-
-We can see this in the Ebay example in [@sec:examples]: when the user extracts a listing's "Sponsored" label, they observe that non-sponsored listings have an invisible "Sponsored" label while sponsored listings have a visible "Sponsored" label that consists of a garbled form "Sponsored". Because of Joker's unified user interaction, the user receives the results of scraping in the table and can immediately write an augmentation formula to validate this hypothesis. Without the unified interaction, the user would have to extract all the desired columns to see all their values before ever getting to notice the pattern and validate their hypothesis.
-
-## Functional Reactive Programming
-
-Functional reactive programming (FRP) enables specifying logic using pure, stateless functions that automatically update in response to upstream changes. This paradigm has famously been used by millions of end users in the form of spreadsheet formula languages (Microsoft Excel & Google Sheets), and has also been extended to richer end-user programming environments (Microsoft Power Fx [@2021g], Google AppSheet [@2021h], Airtable [@2021f], Glide [@2021a], Coda [@2021c] & Gneiss [@chang2014]).
-
-Joker's use of FRP makes it easier for users to program in its spreadsheet formula language. With traditional programming, the eBay example in [@sec:examples] in which a user extracts every listing's "Sponsored" label would be much more complicated. The user would need to understand programming constructs such as state, variables, looping and data flow in order to write a program to extract the label. In Joker, all a user needs to specify is the CSS selector that identifies the element containing the label. Joker takes care of managing state, variables, looping and data flow.
-
-A key limitation of this approach is that users need to understand how CSS selectors work in order to perform extractions. Because the formula language utilizes pure functional semantics, users can iterate on CSS selectors as many times as they need to without having to worry about side effects. This makes the authoring of CSS selectors more accessible but more work remains.
-
-## Prodirect Manipulation
-
-*Prodirect Manipulation* is a term coined by Ravi Chugh in a position paper [@chugh2016a] in which he advocates for “novel software systems that tightly couple programmatic and direct manipulation.” This principle embodies Joker's formula language and PBD interface which combine the ease of use of PBD and the expressiveness of traditional programming.
-
-In the eBay example in [@sec:examples], we show how a user can take advantage of Joker's prodirect manipulation interaction to extract the "Sponsored" label of a listing when PBD is not enough. The user can either directly edit the synthesized formula or author one from scratch to achieve the task. This is significant because the resulting customization to sort the listings by whether they are sponsored or not would not otherwise be possible.
-
-We can see a similar prodirect manipulation interaction model in Sketch-N-Sketch [@chugh2016]. Sketch-N-Sketch allows users to create an SVG shape via traditional programming and then switch to modifying its size or shape via direct manipulation.
 
 # Evaluation {#sec:evaluation}
 
