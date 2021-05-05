@@ -179,8 +179,40 @@ We evaluate our interaction model and tool in terms of three research questions:
 Following a method used to evaluate visualizations through a diverse gallery of examples [@ren2018], our first evaluation of Joker provides an case studies of popular websites on which Joker can be used for web customization and on which it fails. For the websites on which Joker can be used, we provide the sequence of interactions needed to achieve the customizations. For the websites on which Joker fails, we provide an explanation.
 
 ### Successful applications
+<div class="pdf-only">
+```{=latex}
+\begin{table}
+\hypertarget{tab:examples}{%
+\centering
+\includegraphics[width=\columnwidth]{media/examples_table.png}
+\caption{A gallery of website customizations that we have achieved using Joker. End users can perform these customizations without writing any JavaScript.}\label{tab:examples}
+}
+\vspace{-0.9cm}
+\end{table}
+```
+</div>
 
-We have used Joker to achieve a variety of purposes across many popular websites. For example, we have used Joker to sort search results by price within the Featured page on Amazon. (Using Amazon's sort by price feature often returns irrelevant results.) In Amazon's source code, the price is split into three HTML elements: the dollar sign, the dollar amount, and the cents amount. A user can only scrape the cents element by demonstration into column A. However, because the parent element of the cents element contains all three of the price elements, the user can scrape the full price using the formula `GetParent(A)`. Next, the user can write the formula `ExtractNumber(B)` to convert the string into a numeric value. Finally, the user can sort this column by low-to-high prices. In a similar manner, we have used Joker to scrape and sort prices and ratings on the product listing pages of Target and eBay.
+<!-- <div class="pdf-only">
+```{=latex}
+\begin{table*}[]
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Website}              & \textbf{Example Customization Achieved by Joker}                                        \\ \hline
+eBay, Amazon, etc.            & Filter listings by whether they have a "Sponsored" label.                        \\
+Amazon, Target, etc. & Sort search results by price and rating.                                                \\
+Google Scholar                & Filter publications for those whose title contains a keyword. \\
+Reddit, CNN, ABC, etc.  & Sort by the read times of articles. Filter already-visited articles.         \\
+Weather.com                   & Filter hourly weather to find nice times of day.                                        \\
+Github                        & Sort a user's code repositories by stars to find popular work.                          \\
+Postmates, Uber Eats, etc.     & Sort restaurants by delivery time and delivery fee.                                     \\ \hline
+\end{tabular}
+\end{table*}
+````
+</div> -->
+
+We have used Joker to achieve a variety of purposes across many popular websites. Several of the compelling examples we found are summarized in Table 1. We will now walk through the examples in the first three rows of the table to showcase how Joker's suite of formulas can be used for diverse extraction and augmentation tasks.
+
+In the first example, we used Joker to sort search results by price within the Featured page on Amazon. (Using Amazon's sort by price feature often returns irrelevant results.) In Amazon's source code, the price is split into three HTML elements: the dollar sign, the dollar amount, and the cents amount. A user can only scrape the cents element by demonstration into column A. However, because the parent element of the cents element contains all three of the price elements, the user can scrape the full price using the formula `GetParent(A)`. Next, the user can write the formula `ExtractNumber(B)` to convert the string into a numeric value. Finally, the user can sort this column by low-to-high prices. In a similar manner, we have used Joker to scrape and sort prices and ratings on the product listing pages of Target and eBay.
 
 We have also found Joker to be useful for filtering based on text inputs. For example, we have used Joker to filter the titles of a researcher's publications on their Google Scholar profile. Specifically, a user can first scrape the titles into column A by demonstration. Then, the user can write the formula `Includes(A, "compiler")` that returns whether or not the title contains the keyword "compiler". Finally, the user can sort by this column to get all of the publications that fit their constraint at the top of the page. We have also used Joker to filter other text-based directory web pages such as Google search results and the MIT course catalog, in similar ways.
 
