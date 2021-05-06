@@ -37,11 +37,11 @@ Joker adds two key features to Wildcard:
 
 **A PBD interface for creating extraction formulas**: Directly writing extraction formulas can be challenging for end-users, so Joker also implements a PBD interface that uses demonstrations to synthesize extraction formulas. Demonstrations have been used to synthesize data extraction programs in a number of prior systems. However, a key property of our design is that the extraction program synthesized from the demonstration is made visible to the user as a spreadsheet formula that can be edited and executed using pure functional semantics.
 
-[@sec:examples] describes a concrete scenario, showing how Joker enables a user to complete a useful customization task. In [@sec:implementation], we elaborate on the implementation of our formula language, as well as the algorithm used by our PBD interface. Then, in [@sec:design-principles], we describe some of the broader design principles that Joker embodies and discuss their applications in other contexts.
+[@sec:examples] describes a concrete scenario, showing how Joker enables a user to complete a useful customization task. In [@sec:implementation], we elaborate on the implementation of our formula language and user interface, as well as the algorithms used by our PBD interface.
 
 We have performed three evaluations of our approach, presented in [@sec:evaluation]. First, we describe a suite of case studies in which we have used Joker to extract and augment various websites in order to characterize its capabilities and limitations. Second, we describe a formative user study with five participants, which showed that users were generally able to use Joker to perform useful extraction and augmentation tasks. However, it also uncovered limitations, particularly for less experienced users trying to extract data from more complex websites. Lastly, we perform a heuristic evaluation of our tool, using the Cognitive Dimensions [@blackwell2001] framework to analyze our design.
 
-Joker relates to existing work not only in end-user web customization, but also in end-user web scraping and program synthesis which we discuss in [@sec:related-worker]. Finally, we discuss opportunities for future work in [@sec:conclusion].
+Joker relates to existing work not only in end-user web customization, but also in end-user web scraping and program synthesis which we discuss in [@sec:related-work]. Finally, we discuss opportunities for future work in [@sec:conclusion].
 
 # Example Usage Scenario {#sec:examples}
 
@@ -105,7 +105,7 @@ Using Joker, Jen was able to not only achieve her initial customization goal to 
 \end{figure*}
 </div>
 
-In this section, we describe Joker's formula language in more detail. Then, we outline the *wrapper induction* [@kushmerick2000] algorithm that Joker's PBD interface uses to synthesize the row and column selectors presented in formulas. [@fig:2] illustrates the entire process.
+In this section, we describe Joker's formula language in more detail. Then, we outline the *wrapper induction* [@kushmerick2000] algorithm that Joker's PBD interface uses to synthesize the row and column selectors presented in formulas. [@fig:overview] illustrates the entire process.
 
 ## Extraction Formulas
 
