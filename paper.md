@@ -98,7 +98,14 @@ Using Joker, Jen was able to not only achieve her initial customization goal to 
 
 # System Implementation {#sec:implementation}
 
-In this section, we describe Joker's formula language in more detail. Then, we outline the *wrapper induction* [@kushmerick2000] algorithm that Joker's PBD interface uses to synthesize the row and column selectors presented in formulas.
+<div class="pdf-only">
+\begin{figure*}
+  \includegraphics[width=\textwidth]{media/overview.png}
+  \caption{\label{fig:overview}An overview of Joker's interaction model and wrapper induction process.}
+\end{figure*}
+</div>
+
+In this section, we describe Joker's formula language in more detail. Then, we outline the *wrapper induction* [@kushmerick2000] algorithm that Joker's PBD interface uses to synthesize the row and column selectors presented in formulas. [@fig:2] illustrates the entire process.
 
 ## Extraction Formulas
 
