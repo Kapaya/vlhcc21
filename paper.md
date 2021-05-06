@@ -33,7 +33,7 @@ To illustrate our unified interaction model for web customization, we have built
 
 Joker adds two key features to Wildcard:
 
-**A Unified formula language for extraction & augmentation**: Wildcard’s formula language only supported primitive values like strings and numbers aimed at augmentation. Joker extends this language by introducing Document Object Model (DOM) elements as a new type of value, and adding a new set of formulas for performing operations on them. This includes querying elements with Cascading Stylesheet Selectors (CSS) selectors and traversing the DOM. With this approach, a single formula language is used to express both extraction and augmentation tasks, even within a single formula expression.
+**A unified formula language for extraction & augmentation**: Wildcard’s formula language only supported primitive values like strings and numbers aimed at augmentation. Joker extends this language by introducing Document Object Model (DOM) elements as a new type of value, and adding a new set of formulas for performing operations on them. This includes querying elements with Cascading Stylesheet Selectors (CSS) selectors and traversing the DOM. With this approach, a single formula language is used to express both extraction and augmentation tasks, even within a single formula expression.
 
 **A PBD interface for creating extraction formulas**: Directly writing extraction formulas can be challenging for end-users, so Joker also implements a PBD interface that uses demonstrations to synthesize extraction formulas. Demonstrations have been used to synthesize data extraction programs in a number of prior systems. However, a key property of our design is that the extraction program synthesized from the demonstration is made visible to the user as a spreadsheet formula that can be edited and executed using pure functional semantics.
 
@@ -45,9 +45,9 @@ Joker relates to existing work not only in end-user web customization, but also 
 
 # Example Usage Scenario {#sec:examples}
 
-To illustrate the user experience of Joker, we present a scenario of customizing eBay, a popular online marksetplace. We have also illustrated this scenario in the video accompanying this paper which we highly recommend you should watch.
+Here is an example scenario, illustrated in [@fig:ebay], and demonstrated in the Video Figure accompanying this paper.
 
-The goal of the user, Jen, is to sort the results of her search for karaoke machines by price. eBay provides a sorting feature but changing the sorting criteria reloads the search results instead of sorting the currently loaded results which is not what Jen wants to do. Joker can enable her to achieve her desired sorting behaviour right in the context of the website within a few minutes.
+Jen is a web user searching for a karaoke machine on eBay, a shopping website. She wants to sort listings by price within a page of search results, and can achieve this customization using Joker.
 
 <div class="pdf-only">
 \begin{figure*}
@@ -56,23 +56,45 @@ The goal of the user, Jen, is to sort the results of her search for karaoke mach
 \end{figure*}
 </div>
 
-*Extracting Product Names & Prices By Demonstration*. (@fig:ebay Part A): Jen initiates Joker through the browser context menu. As she hovers over the product names, Joker provides two kinds of live feedback. First, it highlights the names of all the listings on the page with a green background, to indicate how it has generalized Jen's intent based on her demonstration of a single example product. Second, a column of the table is populated with the values that will be extracted, giving a preview of how the extracted data would look. To commit the extraction, Jen clicks on the product name and then does the same for the product price.
+*Extracting Product Names & Prices By Demonstration*. (@fig:ebay Part A): Jen initiates Joker through the browser context menu. As she hovers over the product names, Joker provides two kinds of live feedback. First, it highlights the names of all the listings on the page, to indicate how it has generalized Jen's intent based on her demonstration of a single example product. Second, a column of the table is populated with the values that will be extracted, giving a preview of how the extracted data would look. To commit the extraction, Jen clicks on the product name. She repeats a similar process for product prices.
 
-Upon clicking one of the cell's in column `B`, Jen sees Joker's _formula_ bar at the top of the table display the extraction formula that was generated from her demonstration:
+When she clicks one of the cells in column `B`, the formula bar above the table display the extraction formula that was generated from her demonstration, and produces the values in column `B`:
 
 `QuerySelector(rowElement, "span.s-item__price")`
 
-For each row in the table, Joker has a created a reference to the corresponding DOM element on the website that contains the product information. This row element is a special system variable known as `rowElement`. `QuerySelector` is an extraction formula that runs the specified CSS selector (`span.s-item__price`) on the `rowElement` to extract the text value of the element the selector matches. The CSS selector was generated based on her demonstration, and along with the rest of the formula, can be edited to correct any mistakes if needed.
+For each row in the table, Joker has a created a reference to the corresponding DOM element on the website, accessible through the special variable `rowElement`. The `QuerySelector` function runs the specified CSS selector (`span.s-item__price`) within the `rowElement` to extract the price of each item. While Jen could edit this formula if needed, in this case the values in the table look correct, so there's no need to edit this formula any further.
 
-*Sorting Products By Price*. (@fig:ebay Part B): Now that she has the product prices in the table, Jen proceeds to augment them in order to be suitable for sorting. In their current form, they contain the dollar sign ($) which is not a number. In the next column, Jen types `=` and the formula bar creates a dropdwn containing all of Joker's formulas. She sees the `ExtractNumber` formula and reads its documentation to confirm that she can use it to extract the numbers in the product price values. To run the formula on the product price values, she references the column they are in (`B`). Jen can now sort the column with the augmented prices which not only sorts Joker's table but also sorts the products on the website.
+*Sorting Products By Price*. (@fig:ebay Part B): Next, Jen wants to sort the table by price, but she realizes that the column of prices is a list of strings containing the `$` symbol. She needs to lightly _augment_ this raw data by turning the strings into numbers. In the next column `C`, Jen starts typing a formula, and uses an autocomplete dropdown to find a relevant function that extracts numeric values from strings:
 
-*Extracting Product URL With Formulas* (@fig:ebay Part C): While navigating the autocomplete dropdown of Joker's formula bar, Jen noticed the `Visted` formula which takes a URL as an input and indicates if the URL has been visited. She realizes that it would also be useful to sort the products by whether she has clicked on them. This will allow her to focus on the products she hasn't seen yet which is not a feature provided by eBay. Because of Joker's unified interaction model, Jen can go right back into extracting the values she needs!
+`=ExtractNumber(B)`
 
-Her mouse pointer indicates that the product name links to the product's website but she doesn't see a way to extract the URLs by demonstration because they are not visiable. Having done some basic web development, Jen uses the browser context menu to inspect the product name which opens the browser development tools. There, she sees that the product name is in an `H3` element nested in an `A` element that has an `href` attribute with the URL. Using a composition of the `GetAttribute` and `GetParent` formulas, Jen is able to traverse the DOM up from the produce name element to the link element and then extract the URL value of the product into a column via `=GetAttribute(GetParent(A), "href")`.
+Now column C contains numeric values, so Jen can sort the table by the column of prices. Because the table is synchronized with the web page, the page becomes sorted as well.
 
-*Sorting Products By Whether They Have Been Visited* (@fig:ebay Part C): Now that Jen has the URLs of each product in the table, she can use the `Visited` formula to indicate (through checkboxes) whether she has visited the corresponding product page. Using Joker, Jen was able to not only achieve her initial customization goal to sort the products by price but also perform a customization she did not planned to do. This was made possible by Joker's unified interaction model for web customization which enbled her to interleave extraction and augmention.
+*Extracting Product URL With Formulas* (@fig:ebay Part C): While completing the previous task, Jen realizes there is another customization she would find useful: prioritizing listings where she has not yet visited the details page for the listing. To do this, she must first return to _extracting_ more relevant data from the page.
 
-The interaction model Joker provides for web customization supports this type of adhoc workflows that are common in the realword, especially with creative tasks such as customization. Joker is flexible enough to support a wide range of other useful customizations and programming proficiency levels, and we present a greater variety of use cases in [@sec:evaluation].
+Each listing links to a page for the specific item, but because the URL is not visible in the page, it's not possible to directly scrape this value by demonstration. However, Jen can still achieve the goal by directly writing an extraction formula.
+
+Jen has some basic knowledge of HTML, which she can leverage to write the formula. She opens the browser developer tools, and observes that the listing title is represented by a link tag with a heading inside:
+
+```
+<a href="LISTING PAGE URL">
+  <h3>LISTING NAME</h3>
+</a>
+```
+
+Since there is already a column `A` in the table representing the listing's title, she can use this as a starting point to write the formula:
+
+`=GetAttribute(GetParent(A), "href")`
+
+This formula first calls the `GetParent` function on column `A`, which traverses up one level in the DOM to the `a` element. Then, it uses the `GetAttribute` function to retrieve the value of the `href` attribute from that element. After running this formula, the table contains a column with the URL for each product.
+
+*Sorting Products By Whether They Have Been Visited* (@fig:ebay Part C): After performing that extraction, Jen can write a final augmentation formula to indicate whether she has visited the corresponding product page:
+
+`=Visited(D)`
+
+The `Visited` function checks whether a URL is present in the browser history and returns a boolean value. Jen can then sort by this column to put listings that she has not yet visited at the top of the page.
+
+Using Joker, Jen was able to not only achieve her initial customization goal to sort the products by price but also perform a customization she did not planned to do. This was made possible by Joker's unified interaction model for web customization which enbled her to interleave extraction and augmention. While we have described a single illustrative scenario in this example, Joker is flexible enough to support a wide range of other useful customizations and workflows, described in more detail in [@sec:evaluation].
 
 # System Implementation {#sec:implementation}
 
