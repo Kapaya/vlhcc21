@@ -145,7 +145,7 @@ We evaluate our interaction model and tool in terms of three research questions:
 Following a method used to evaluate visualizations through a diverse gallery of examples [@ren2018], our first evaluation of Joker provides an case studies of popular websites on which Joker can be used for web customization and on which it fails. For the websites on which Joker can be used, we provide the sequence of interactions needed to achieve the customizations. For the websites on which Joker fails, we provide an explanation.
 
 ### Successful applications
-<div class="pdf-only">
+<!-- <div class="pdf-only">
 ```{=latex}
 \begin{table}
 \hypertarget{tab:examples}{%
@@ -156,25 +156,28 @@ Following a method used to evaluate visualizations through a diverse gallery of 
 \vspace{-0.9cm}
 \end{table}
 ```
-</div>
+</div> -->
 
-<!-- <div class="pdf-only">
+<div class="pdf-only">
 ```{=latex}
 \begin{table*}[]
+\centering
 \begin{tabular}{|l|l|}
 \hline
 \textbf{Website}              & \textbf{Example Customization Achieved by Joker}                                        \\ \hline
-eBay, Amazon, etc.            & Filter listings by whether they have a "Sponsored" label.                        \\
-Amazon, Target, etc. & Sort search results by price and rating.                                                \\
+eBay, Amazon            & Filter listings by whether they have a "Sponsored" label.                        \\
+Amazon, Target & Sort search results by price and rating.                                                \\
 Google Scholar                & Filter publications for those whose title contains a keyword. \\
-Reddit, CNN, ABC, etc.  & Sort by the read times of articles. Filter already-visited articles.         \\
+Reddit, CNN, ABC  & Sort by the read times of articles. Filter already-visited articles.         \\
 Weather.com                   & Filter hourly weather to find nice times of day.                                        \\
 Github                        & Sort a user's code repositories by stars to find popular work.                          \\
-Postmates, Uber Eats, etc.     & Sort restaurants by delivery time and delivery fee.                                     \\ \hline
+Postmates, Uber Eats    & Sort restaurants by delivery time and delivery fee.                                     \\ \hline
 \end{tabular}
+\vspace{8pt}
+\caption{Examples of websites that Joker can be used to customize, including extraction and augmentation}
 \end{table*}
 ````
-</div> -->
+</div>
 
 We have used Joker to achieve a variety of purposes across many popular websites. Several of the compelling examples we found are summarized in Table 1. We will now walk through the examples in the first three rows of the table to showcase how Joker's suite of formulas can be used for diverse extraction and augmentation tasks.
 
