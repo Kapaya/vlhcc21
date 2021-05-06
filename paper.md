@@ -47,7 +47,7 @@ Joker relates to existing work not only in end-user web customization, but also 
 
 Here is an example scenario, illustrated in [@fig:ebay], and demonstrated in the Video Figure accompanying this paper.
 
-Jen is a web user searching for a karaoke machine on eBay, a shopping website. She wants to sort listings by price within a page of search results, and can achieve this customization using Joker.
+Jen is a web user searching for a karaoke machine on eBay, a shopping website. She wants to sort products by price within a page of search results, and can achieve this customization using Joker.
 
 <div class="pdf-only">
 \begin{figure*}
@@ -68,9 +68,9 @@ For each row in the table, Joker has a created a reference to the corresponding 
 
 `=ExtractNumber(B)`
 
-Now column C contains numeric values, so Jen can sort the table by the column of prices. Because the table is synchronized with the web page, the page becomes sorted as well.
+Now column C contains numeric values, so Jen can sort the table by the column of prices. Because the table is synchronized with the website, the page becomes sorted as well.
 
-*Extracting Product URL With Formulas* (@fig:ebay Part C): While completing the previous task, Jen realizes there is another customization she would find useful: prioritizing listings where she has not yet visited the details page for the listing. To do this, she must first return to _extracting_ more relevant data from the page.
+*Extracting Product URL With Formulas* (@fig:ebay Part C): While completing the previous task, Jen realizes there is another customization she would find useful: prioritizing products for which she has not yet visited the details page for the listing. To do this, she must first return to _extracting_ more relevant data from the page.
 
 Each listing links to a page for the specific item, but because the URL is not visible in the page, it's not possible to directly scrape this value by demonstration. However, Jen can still achieve the goal by directly writing an extraction formula.
 
@@ -82,7 +82,7 @@ Jen has some basic knowledge of HTML, which she can leverage to write the formul
 </a>
 ```
 
-Since there is already a column `A` in the table representing the listing's title, she can use this as a starting point to write the formula:
+Since there is already a column `A` in the table representing the product's title, she can use this as a starting point to write the formula:
 
 `=GetAttribute(GetParent(A), "href")`
 
@@ -94,7 +94,7 @@ This formula first calls the `GetParent` function on column `A`, which traverses
 
 The `Visited` function checks whether a URL is present in the browser history and returns a boolean value. Jen can then sort by this column to put listings that she has not yet visited at the top of the page.
 
-Using Joker, Jen was able to not only achieve her initial customization goal to sort the products by price but also perform a customization she did not planned to do. This was made possible by Joker's unified interaction model for web customization which enbled her to interleave extraction and augmention. While we have described a single illustrative scenario in this example, Joker is flexible enough to support a wide range of other useful customizations and workflows, described in more detail in [@sec:evaluation].
+Using Joker, Jen was able to not only achieve her initial customization goal to sort the products by price but also perform a customization she did not plan to do. This was made possible by Joker's unified interaction model for web customization which enbled her to interleave extraction and augmention. While we have described a single illustrative scenario in this example, Joker is flexible enough to support a wide range of other useful customizations and workflows, described in more detail in [@sec:evaluation].
 
 # System Implementation {#sec:implementation}
 
