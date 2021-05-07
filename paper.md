@@ -123,41 +123,44 @@ To extract data from a row, formulas need a way to reference the current row, so
 
 While many more functions could be added to expose more of the underlying DOM API, we found that in practice these three functions provided ample power through composition. For example, in [@sec:examples] we showed how `GetParent` and `GetAttribute` can be composed to traverse the DOM and extract the URL associated with a listing (`=GetAttribute(GetParent(...), "href")`).
 
-By providing a single formula language to express extractions and augmentations, Joker enables a *unified user interaction model* that supports interleaving the two. Furthermore, the formula language enables users to specify logic using pure, stateless functions that reactively update in response to upstream changes. This *functional reactive paradigm* is easier to reason about than traditional imperative programming, as demonstrated by the use of formulas by millions of end users in spreadsheet programs and end-user programming environments [@2021g; @2021h; @2021f; @2021a; @2021c; @chang2014].
+By providing a single formula language to express extractions and augmentations, Joker enables a *unified interaction model* that supports interleaving the two. Furthermore, the formula language enables users to specify logic using pure, stateless functions that reactively update in response to upstream changes. This *functional reactive paradigm* is easier to reason about than traditional imperative programming, as demonstrated by the use of formulas by millions of end users in spreadsheet programs and end-user programming environments [@2021g; @2021h; @2021f; @2021a; @2021c; @chang2014].
 
 ## Wrapper Induction
 
-Wrapper induction is the task of synthesizing a data extraction specification from a few examples of data in the data set. When users demonstrate a column value on a website through Joker's PBD interface, the demonstrated column value is fed into our wrapper induction algorithm. The result is an editable extraction formula that extracts all the corresponding column values. This use of PBD to generate editable code embodies a design principle known as *Prodirect Manipulation*. The term was coined by Ravi Chugh in a position paper [@chugh2016a] in which he advocates for “novel software systems that tightly couple programmatic and direct manipulation.” In a similar fashion, Sketch-N-Sketch [@chugh2016] provides prodirect manipulation by allowing users to create an SVG shape via traditional programming and then switch to modifying its size or shape via direct manipulation.
+When users demonstrate a specific column value to extract, Joker must synthesize a program that reflects the user's general intent. This is an instance of the _wrapper induction_ problem of synthesizing a web data extraction query from examples [@kushmerick2000; @furche2016; @flesca2004]. Prior work on this topic generally prioritizes accuracy and robustness to future changes, which makes sense for a fully automated system, but can lead to very complex queries. In our work, we chose to prioritize the readability of queries by less sophisticated users, so that users can more easily author queries and repair them when they break.
 
-Joker synthesizes a single *row selector* for the website: a CSS selector that identifies a set of DOM elements corresponding to the rows of the data table. For each column in the table, it synthesizes a *column selector*, a CSS selector that identifies the element containing the column value. We proceed to describe the criteria used to determine row elements and then describe the criteria used to synthesize CSS selectors for row and column elements.
+The use of PBD to generate editable code embodies a design principle known as *Prodirect Manipulation*. The term was coined by Ravi Chugh in a position paper [@chugh2016a] in which he advocates for “novel software systems that tightly couple programmatic and direct manipulation.” In a similar fashion, Sketch-N-Sketch [@chugh2016] provides prodirect manipulation by allowing users to create an SVG shape via traditional programming and then switch to modifying its size or shape via direct manipulation.
+
+We implemented a set of heuristics inspired by Vegemite [@lin2009] for wrapper induction, described below.
 
 ### Determining Row Elements
 
-Given a demonstrated column value `V` within a column element `C` with CSS selector `S`,  Joker uses the following criteria to determine the containing row element:
+The user starts by demonstrating an element $v$, representing a value that should be in the table. From that demonstration, we must find a set of _row elements_: representing the rows of the table. We could naively assume that $parent(v)$ is the row containing $v$, but often $v$ is deeply nested inside its containing row; we must determine which ancestor of $v$ is likely to be the row.
 
-*Plausibility*. An element `R` is a plausible row element if 1) it is in the parent path of the column element `C` containing the demonstrated column value `V` and 2) the CSS selector `S` of element `C` identifies  only `C` and no other elements within `R`.
+Intuitively, we solve this problem by assuming that all rows share some similar internal structure. In particular, we expect most rows to contain a value for the demonstrated column. (If there were no missing data, we'd expect _all_ rows to contain data for this column.)
 
-*Weight*. A row element `R` has a weight `W` equal to the number of its siblings for which the CSS selector `S` of column element `C` only identifies a single element. The weight will be used to favor row elements that will result in the highest number of rows in the resulting data table.
+Formally: assume a function $select(el, s)$ which runs a CSS selector returns the set of elements matching $s$ within $el$. We generate a set of plausible candidates $P$, consisting of pairs of a row element and CSS selector:
 
-*Best*. A row element `R` is the best if it is plausible and there is no other row element that has a higher weight. If there are multiple plausible row elements with the highest weight, we pick the one closest to the column element `C` in its parent path.
+$P = \{ (r, s) \mid r \in ancestors(v) \land select(r, s) = \{v\} \}$
 
-### Synthesizing CSS Selectors For Column & Row Elements
+For each candidate $(r, s) \in P$, we compute a weight function $w$, which is based on the number of siblings of $r$ that have "similar structure", defined by checking: does running $s$ within the sibling also return a unique element?
 
-Given a row element, Joker synthesizes its row selector using the following criteria:
+$w(r, s) = |\{ r' \mid r' \in siblings(r) \land |select(r', s) | = 1 \}|$
 
-*Plausibility*. A selector $S_{row}$ is a plausible row selector if it consists of a subset of the classes on the row element.
+We then choose the candidate with the highest weight. In case of ties, the candidate closer to $v$ in the tree (i.e., lower in the tree) wins. Given a winning candidate $(r, s)$, the full set of row elements is $\{r\} \cup siblings(r)$.
 
-*Weight*. $S_{row}$ has a weight equal to the number of classes it consists of. The weight will be used to favor weights selectors that utilize the minimum required classes.
+### Synthesizing CSS Selectors For Column Values
 
-*Best*. $S_{row}$ is the best if it is plausible and there is no other selector that has a lower weight than it. If there are multiple selectors that are plausible and have the lowest weight, we only pick one.
+Once we have determined the row elements, there is still a task remaining: we must choose a CSS selector that will be used in the extraction formula to identify the demonstrated value within its row. Given a demonstrated value $v$ within a row element $r$, the minimum criteria for a plausible selector $s$ is that it uniquely identifies the value within the row: $select(r, s) = \{v\}$. There may be many plausible selectors, and we must pick a best candidate.
 
-Given a column element, Joker synthesizes its column selector using the following criteria:
+To populate the plausible set, we generate two kinds of selectors:
 
-*Plausibility*. A selector $S_{column}$ is a plausible column selector if it only selects the given column element when applied on the corresponding row element.
+- selectors using CSS classes, which are manual annotations on DOM elements added by the website's programmers, typically for styling purposes (e.g. "item__price")
+- selectors using positional indexes within the tree, using the `nth-child` CSS selector (e.g. `nth-child(2)`, representing the second child of an element)
 
-*Weight*. $S_{column}$ has a weight equal to the number of classes it consists of. As before, we favor selectors with lower weights.
+We first prioritize selectors using classes, because they tend to be more robust to changes on the website. A single selector can combine multiple classes, but we prefer using fewer classes when possible.
 
-*Best*. $S_{column}$ is the best if it is plausible and there is no other selector that has a lower weight than it has. If there are multiple selectors that are plausible and have the lowest weight, we only pick one.
+If no plausible class-based selector can be generated (for example, if the relevant elements don't have any classes to query), we fall back to using a positional index selector. This kind of selector can always be generated regardless of the contents of the page, but tends to be less accurate and robust.
 
 # Evaluation {#sec:evaluation}
 
