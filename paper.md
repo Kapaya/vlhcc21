@@ -127,11 +127,7 @@ By providing a single formula language to express extractions and augmentations,
 
 ## Wrapper Induction
 
-When users demonstrate a specific column value to extract, Joker must synthesize a program that reflects the user's general intent. This is an instance of the _wrapper induction_ problem of synthesizing a web data extraction query from examples [@kushmerick2000; @furche2016; @flesca2004]. Prior work on this topic generally prioritizes accuracy and robustness to future changes, which makes sense for a fully automated system, but can lead to very complex queries. In our work, we chose to prioritize the readability of queries by less sophisticated users, so that users can more easily author queries and repair them when they break.
-
-The use of PBD to generate editable code embodies a design principle known as *Prodirect Manipulation*. The term was coined by Ravi Chugh in a position paper [@chugh2016a] in which he advocates for “novel software systems that tightly couple programmatic and direct manipulation.” In a similar fashion, Sketch-N-Sketch [@chugh2016] provides prodirect manipulation by allowing users to create an SVG shape via traditional programming and then switch to modifying its size or shape via direct manipulation.
-
-We implemented a set of heuristics inspired by Vegemite [@lin2009] for wrapper induction, described below.
+When users demonstrate a specific column value to extract, Joker must synthesize a program that reflects the user's general intent. This is an instance of the _wrapper induction_ problem of synthesizing a web data extraction query from examples [@kushmerick2000; @furche2016; @flesca2004]. Prior work on this topic generally prioritizes accuracy and robustness to future changes, which makes sense for a fully automated system, but can lead to very complex queries. In our work, we chose to prioritize the readability of queries by less sophisticated users, so that users can more easily author queries and repair them when they break. We implemented a set of heuristics inspired by Vegemite [@lin2009] for wrapper induction, described below.
 
 ### Determining Row Elements
 
@@ -151,16 +147,16 @@ We then choose the candidate with the highest weight. In case of ties, the candi
 
 ### Synthesizing CSS Selectors For Column Values
 
-Once we have determined the row elements, there is still a task remaining: we must choose a CSS selector that will be used in the extraction formula to identify the demonstrated value within its row. Given a demonstrated value $v$ within a row element $r$, the minimum criteria for a plausible selector $s$ is that it uniquely identifies the value within the row: $select(r, s) = \{v\}$. There may be many plausible selectors, and we must pick a best candidate.
+Once we have determined the row elements, next we must choose a CSS selector that will be used in to identify the demonstrated value within its row.
 
-To populate the plausible set, we generate two kinds of selectors:
+Given a demonstrated value $v$ within a row element $r$, we generate two kinds of plausible selectors:
 
 - selectors using CSS classes, which are manual annotations on DOM elements added by the website's programmers, typically for styling purposes (e.g. "item__price")
 - selectors using positional indexes within the tree, using the `nth-child` CSS selector (e.g. `nth-child(2)`, representing the second child of an element)
 
-We first prioritize selectors using classes, because they tend to be more robust to changes on the website. A single selector can combine multiple classes, but we prefer using fewer classes when possible.
+The minimum criteria for a plausible selector $s$ is that it uniquely identifies the value within the row: $select(r, s) = \{v\}$. But there may be many plausible selectors, so we must pick a best one.
 
-If no plausible class-based selector can be generated (for example, if the relevant elements don't have any classes to query), we fall back to using a positional index selector. This kind of selector can always be generated regardless of the contents of the page, but tends to be less accurate and robust.
+We first prioritize selectors using classes, because they tend to be more robust to changes on the website. A single selector can combine multiple classes, but we prefer using fewer classes when possible. If no plausible class-based selector can be generated (for example, if the relevant elements don't have any classes to query), we fall back to using a positional index selector. This kind of selector can always be generated regardless of the contents of the page, but tends to be less accurate and robust.
 
 # Evaluation {#sec:evaluation}
 
@@ -292,13 +288,15 @@ Vegemite [@lin2009] is a tool for end-user programming of web mashups. Like Joke
 
 Sifter [@huynh2006] is a tool that augments websites with advanced sorting and filtering functionality. It attempts to automatically detect items and fields on the page with a variety of heuristics. If these fail, it gives the user the option of demonstrating to correct some parts of the result. In contrast, Joker makes fewer assumptions about the structure of websites, by giving control to the user from the beginning of the process and displaying an editable synthesized program. We hypothesize that focusing on a tight feedback loop rather than automation may support a scraping process that offers more expressive power and extends to a greater variety of websites, but further user testing is required to validate this hypothesis. Of course, better heuristics could benefit our model as well; the ideal system would make good guesses while giving the user full understanding and control of the extraction process.
 
-## End-user Web Scraping
+## Web Scraping and Program Synthesis
 
 Joker builds on insights from other tools that synthesize web scraping code from user demonstrations, and give users ways to inspect and modify the generated code.
 
 Rousillon [@chasins2018] is a tool that enables end-users to scrape hierarchical web data across multiple linked web pages. It presents the web extraction program generated from demonstrations in an editable, high-level, block-based language called Helena [@2021c]. While both Rousillon and Joker create an editable program, they have different focuses. Because Rousillon allows users to scrape data across multiple pages (e.g., scraping details from each linked page in a list), it uses an imperative language, with nested loops as a key construct. In contrast, Joker can only scrape within a single page, and therefore can use a simpler declarative formula language. Also, Rousillon only allows editing high-level control flow and treats some details of the extraction logic as opaque; Joker offers finer-grained control over details like CSS selectors.
 
 Mayer et al propose a user interaction model called Program Navigation [@mayer2015] which aims to give users another mechanism beside examples for guiding the generalization process of PBE tools like FlashExtract [@le2014] and FlashFill [@harris].  This is important because demonstrations are an ambiguous specification for program synthesis [@peleg2018]: the set of synthesized programs for a demonstration can be very large. The Program Navigation UI displays a natural language description of a space of possible programs, and lets the user choose different alternatives for parts of the generated expression. Joker shares the general idea of displaying synthesized programs to users, but only presents the top-ranked extraction program, which may not be the best one; our tool might be improved by incorporating a UI like Program Navigation.
+
+More broadly, Joker's use of PBD to generate editable code embodies Ravi Chugh's notion of *prodirect manipulation* [@chugh2016a], which aims to bridge the divide between programmatic and direct manipulation. The Sketch-N-Sketch system [@chugh2016] provides prodirect manipulation by allowing users to create an SVG shape via traditional programming and then switch to modifying its size or shape via direct manipulation.
 
 # Conclusion And Future Work {#sec:conclusion}
 
